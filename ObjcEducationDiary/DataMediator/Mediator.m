@@ -23,7 +23,7 @@
     return objectJson;
 };
 
-- (void)fetchData: (void (^)(id _Nonnull, NSError * _Nonnull))completionBlock {
+- (void) fetchData: (void (^)(id _Nonnull, NSError * _Nonnull))completionBlock {
     
     [NetworkManager getRequest: @"bookmarks.json"
                               :^(NSData * _Nonnull dat, NSError * _Nonnull err) {
@@ -33,6 +33,9 @@
 
     }];
 }
+
+//- (void) deleteData: 
+
     
 @end
 

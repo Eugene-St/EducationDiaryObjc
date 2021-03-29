@@ -64,4 +64,17 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
     }] resume];
 };
 
++ (void) putRequest: (NSString *) path
+                   : (NSString *) identificator
+                   : (NSDictionary *) body
+                   : (void (^)(id, NSError*))completionBlock {
+    
+    NSURL *hostURL = [NSURL URLWithString:hostURLPath];
+    NSURL *pathURL = [hostURL URLByAppendingPathComponent:path];
+    NSURL *idURL = [pathURL URLByAppendingPathComponent:identificator];
+    NSURL *url = [idURL URLByAppendingPathComponent:@".json"];
+    
+    
+}
+
 @end

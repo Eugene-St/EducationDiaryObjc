@@ -40,6 +40,7 @@
 		58E6CE11260DE6FA003C6A1A /* Bookmark.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Bookmark.m; sourceTree = "<group>"; };
 		58E6CE15260E0F1E003C6A1A /* Mediator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mediator.h; sourceTree = "<group>"; };
 		58E6CE16260E0F1E003C6A1A /* Mediator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Mediator.m; sourceTree = "<group>"; };
+		58E6CE1A2611C246003C6A1A /* Model.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +79,7 @@
 				582FB7292604ABC1007A646C /* Controllers */,
 				582FB7282604ABA9007A646C /* Storyboards */,
 				582FB72D2604ABEA007A646C /* Source */,
+				58E6CE192611BE9E003C6A1A /* Protocols */,
 				582FB72B2604ABDC007A646C /* SupportingFiles */,
 			);
 			path = ObjcEducationDiary;
@@ -148,6 +150,14 @@
 				58E6CE0D260CB3B8003C6A1A /* NetworkManager.m */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		58E6CE192611BE9E003C6A1A /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				58E6CE1A2611C246003C6A1A /* Model.h */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -18,7 +18,9 @@
                         <viewLayoutGuide key="safeArea" id="JAt-6l-2EJ"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" id="NHg-NC-ghO"/>
+                    <navigationItem key="navigationItem" id="NHg-NC-ghO">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="4uE-y6-gf2"/>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bB7-Ui-jnK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -100,6 +102,9 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Rfu-zR-pwe" kind="relationship" relationship="rootViewController" id="NWc-TR-IPE"/>
+                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rGh-KF-Ddb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

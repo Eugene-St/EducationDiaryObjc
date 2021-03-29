@@ -23,16 +23,17 @@
     return objectJson;
 };
 
-- (void)fetchData:(void (^)(id _Nonnull, NSError * _Nonnull))completionBlock {
+- (void)fetchData: (void (^)(id _Nonnull, NSError * _Nonnull))completionBlock {
     
-    [NetworkManager fetchDataFromNetwork:^(NSData * _Nonnull dat, NSError * _Nonnull err) {
-        
+    [NetworkManager getRequest: @"bookmarks.json"
+                              :^(NSData * _Nonnull dat, NSError * _Nonnull err) {
+
         NSData *decodedData = [self parseJSON:dat];
         completionBlock(decodedData, nil);
-        
+
     }];
 }
-
+    
 @end
 
 

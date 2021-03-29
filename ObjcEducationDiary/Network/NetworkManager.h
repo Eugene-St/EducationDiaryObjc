@@ -11,7 +11,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NetworkManager : NSObject
 
-+(void) fetchDataFromNetwork:(void(^)(NSData *dat, NSError *err))completionBlock;
++(void) getRequest: (NSString *) path
+                  :(void(^)(NSData *dat, NSError *err))completionBlock;
+
++(void) deleteRequest: (NSString *) path
+                     : (NSString *) identificator
+                     : (void(^)(id, NSError*))completionBlock;
 
 @end
 

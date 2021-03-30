@@ -39,31 +39,26 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
         }] resume];
 }
 
-+ (void) deleteRequest:(NSString *)path
-         identificator:(NSString *)identificator
-                      :(void (^)(id, NSError*))completionBlock {
-
++ (void)deleteRequest:(NSString *)path :(NSString *)identificator :(void (^)(id _Nonnull, NSError * _Nonnull))completionBlock {
+    
     NSURL *hostURL = [NSURL URLWithString:hostURLPath];
     NSURL *pathURL = [hostURL URLByAppendingPathComponent:path];
     NSURL *idURL = [pathURL URLByAppendingPathComponent:identificator];
     NSURL *url = [idURL URLByAppendingPathComponent:@".json"];
     
-    NSMutableURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
-    request.HTTPMethod = @"DELETE";
+    [request setHTTPMethod: @"DELETE"];
     
     [[NSURLSession.sharedSession dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-            if(error != nil)
-                   {
+            if(error != nil) {
                        NSLog(@"Error: error calling DELETE");
-                       completionBlock(response, error);
-                   }
-                   else
-                   {
+                       completionBlock(nil, error);
+                   } else {
                        completionBlock(response, nil);
                    }
     }] resume];
-};
+}
 
 + (void) putRequest: (NSString *) path
                    : (NSString *) identificator

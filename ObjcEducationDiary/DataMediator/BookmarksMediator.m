@@ -9,8 +9,7 @@
 
 @implementation BookmarksMediator
 
-- (instancetype)init
-{
+- (instancetype)init {
     if ((self = [super init])) {
         self.pathForFetch = @"bookmarks.json";
         self.pathForUpdate = @"bookmarks/";

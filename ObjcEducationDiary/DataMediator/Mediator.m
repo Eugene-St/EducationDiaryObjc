@@ -65,7 +65,18 @@
 // deleteData
 - (void)deleteData:(id<Model>)model :(void (^)(id _Nonnull, NSError * _Nonnull))completionBlock {
     [NetworkManager deleteRequest:_pathForUpdate :model.sid :^(id _Nonnull obj, NSError * _Nonnull err) {
-        NSLog(@"Hello");
+        
+        if (obj != nil) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(obj, nil);
+            });
+            
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(nil, err);
+            });
+        }
+        
     }];
 }
 

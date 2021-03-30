@@ -9,16 +9,21 @@
 /* Begin PBXBuildFile section */
 		582FB6F3260359E8007A646C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 582FB6F2260359E8007A646C /* AppDelegate.m */; };
 		582FB6F6260359E8007A646C /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 582FB6F5260359E8007A646C /* SceneDelegate.m */; };
-		582FB6FC260359E8007A646C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 582FB6FA260359E8007A646C /* Main.storyboard */; };
 		582FB6FF260359E8007A646C /* ObjcEducationDiary.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 582FB6FD260359E8007A646C /* ObjcEducationDiary.xcdatamodeld */; };
 		582FB701260359EF007A646C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 582FB700260359EF007A646C /* Assets.xcassets */; };
 		582FB704260359EF007A646C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 582FB702260359EF007A646C /* LaunchScreen.storyboard */; };
 		582FB707260359EF007A646C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 582FB706260359EF007A646C /* main.m */; };
+		58B263FA26132AC8008C0953 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58B263F926132AC8008C0953 /* Main.storyboard */; };
+		58B263FF26132EB1008C0953 /* TasksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B263FE26132EB1008C0953 /* TasksViewController.m */; };
+		58B2640726132EF7008C0953 /* TopicsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B2640626132EF7008C0953 /* TopicsViewController.m */; };
+		58B2640D261346CF008C0953 /* Task.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B2640C261346CF008C0953 /* Task.m */; };
+		58B264112613583B008C0953 /* TasksMediator.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B264102613583B008C0953 /* TasksMediator.m */; };
 		58E6CDB726089244003C6A1A /* BookmarksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E6CDB626089244003C6A1A /* BookmarksViewController.m */; };
 		58E6CE0E260CB3B8003C6A1A /* NetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E6CE0D260CB3B8003C6A1A /* NetworkManager.m */; };
 		58E6CE12260DE6FA003C6A1A /* Bookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E6CE11260DE6FA003C6A1A /* Bookmark.m */; };
 		58E6CE17260E0F1E003C6A1A /* Mediator.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E6CE16260E0F1E003C6A1A /* Mediator.m */; };
 		58E6CE2726120C14003C6A1A /* BookmarksMediator.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E6CE2626120C14003C6A1A /* BookmarksMediator.m */; };
+		58EA226B26135BDD007CD2B0 /* TaskViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 58EA226A26135BDD007CD2B0 /* TaskViewModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,12 +32,20 @@
 		582FB6F2260359E8007A646C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		582FB6F4260359E8007A646C /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
 		582FB6F5260359E8007A646C /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
-		582FB6FB260359E8007A646C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		582FB6FE260359E8007A646C /* ObjcEducationDiary.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ObjcEducationDiary.xcdatamodel; sourceTree = "<group>"; };
 		582FB700260359EF007A646C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		582FB703260359EF007A646C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		582FB705260359EF007A646C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		582FB706260359EF007A646C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		58B263F926132AC8008C0953 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		58B263FD26132EB1008C0953 /* TasksViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TasksViewController.h; sourceTree = "<group>"; };
+		58B263FE26132EB1008C0953 /* TasksViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TasksViewController.m; sourceTree = "<group>"; };
+		58B2640526132EF7008C0953 /* TopicsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopicsViewController.h; sourceTree = "<group>"; };
+		58B2640626132EF7008C0953 /* TopicsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopicsViewController.m; sourceTree = "<group>"; };
+		58B2640B261346CF008C0953 /* Task.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Task.h; sourceTree = "<group>"; };
+		58B2640C261346CF008C0953 /* Task.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Task.m; sourceTree = "<group>"; };
+		58B2640F2613583B008C0953 /* TasksMediator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TasksMediator.h; sourceTree = "<group>"; };
+		58B264102613583B008C0953 /* TasksMediator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TasksMediator.m; sourceTree = "<group>"; };
 		58E6CDB526089244003C6A1A /* BookmarksViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BookmarksViewController.h; sourceTree = "<group>"; };
 		58E6CDB626089244003C6A1A /* BookmarksViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BookmarksViewController.m; sourceTree = "<group>"; };
 		58E6CE0C260CB3B8003C6A1A /* NetworkManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkManager.h; sourceTree = "<group>"; };
@@ -44,6 +57,8 @@
 		58E6CE1A2611C246003C6A1A /* Model.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
 		58E6CE2526120C14003C6A1A /* BookmarksMediator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BookmarksMediator.h; sourceTree = "<group>"; };
 		58E6CE2626120C14003C6A1A /* BookmarksMediator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BookmarksMediator.m; sourceTree = "<group>"; };
+		58EA226926135BDD007CD2B0 /* TaskViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskViewModel.h; sourceTree = "<group>"; };
+		58EA226A26135BDD007CD2B0 /* TaskViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaskViewModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,7 +107,7 @@
 		582FB7282604ABA9007A646C /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				582FB6FA260359E8007A646C /* Main.storyboard */,
+				58B263F926132AC8008C0953 /* Main.storyboard */,
 				582FB702260359EF007A646C /* LaunchScreen.storyboard */,
 			);
 			path = Storyboards;
@@ -101,8 +116,9 @@
 		582FB7292604ABC1007A646C /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				58E6CDB526089244003C6A1A /* BookmarksViewController.h */,
-				58E6CDB626089244003C6A1A /* BookmarksViewController.m */,
+				58B2640426132EE6008C0953 /* TopicsControllers */,
+				58B2640326132ECC008C0953 /* TasksControllers */,
+				58B2640126132EB7008C0953 /* BookmarksControllers */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -132,8 +148,8 @@
 			isa = PBXGroup;
 			children = (
 				582FB6FD260359E8007A646C /* ObjcEducationDiary.xcdatamodeld */,
-				58E6CE10260DE6FA003C6A1A /* Bookmark.h */,
-				58E6CE11260DE6FA003C6A1A /* Bookmark.m */,
+				58EA226F26135BF1007CD2B0 /* Bookmark */,
+				58EA226D26135BEA007CD2B0 /* Task */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -145,6 +161,33 @@
 			path = CoreData;
 			sourceTree = "<group>";
 		};
+		58B2640126132EB7008C0953 /* BookmarksControllers */ = {
+			isa = PBXGroup;
+			children = (
+				58E6CDB526089244003C6A1A /* BookmarksViewController.h */,
+				58E6CDB626089244003C6A1A /* BookmarksViewController.m */,
+			);
+			path = BookmarksControllers;
+			sourceTree = "<group>";
+		};
+		58B2640326132ECC008C0953 /* TasksControllers */ = {
+			isa = PBXGroup;
+			children = (
+				58B263FD26132EB1008C0953 /* TasksViewController.h */,
+				58B263FE26132EB1008C0953 /* TasksViewController.m */,
+			);
+			path = TasksControllers;
+			sourceTree = "<group>";
+		};
+		58B2640426132EE6008C0953 /* TopicsControllers */ = {
+			isa = PBXGroup;
+			children = (
+				58B2640526132EF7008C0953 /* TopicsViewController.h */,
+				58B2640626132EF7008C0953 /* TopicsViewController.m */,
+			);
+			path = TopicsControllers;
+			sourceTree = "<group>";
+		};
 		58E6CDBA260892BC003C6A1A /* DataMediator */ = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +195,8 @@
 				58E6CE16260E0F1E003C6A1A /* Mediator.m */,
 				58E6CE2526120C14003C6A1A /* BookmarksMediator.h */,
 				58E6CE2626120C14003C6A1A /* BookmarksMediator.m */,
+				58B2640F2613583B008C0953 /* TasksMediator.h */,
+				58B264102613583B008C0953 /* TasksMediator.m */,
 			);
 			path = DataMediator;
 			sourceTree = "<group>";
@@ -171,6 +216,26 @@
 				58E6CE1A2611C246003C6A1A /* Model.h */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		58EA226D26135BEA007CD2B0 /* Task */ = {
+			isa = PBXGroup;
+			children = (
+				58B2640B261346CF008C0953 /* Task.h */,
+				58B2640C261346CF008C0953 /* Task.m */,
+				58EA226926135BDD007CD2B0 /* TaskViewModel.h */,
+				58EA226A26135BDD007CD2B0 /* TaskViewModel.m */,
+			);
+			path = Task;
+			sourceTree = "<group>";
+		};
+		58EA226F26135BF1007CD2B0 /* Bookmark */ = {
+			isa = PBXGroup;
+			children = (
+				58E6CE10260DE6FA003C6A1A /* Bookmark.h */,
+				58E6CE11260DE6FA003C6A1A /* Bookmark.m */,
+			);
+			path = Bookmark;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -232,7 +297,7 @@
 			files = (
 				582FB704260359EF007A646C /* LaunchScreen.storyboard in Resources */,
 				582FB701260359EF007A646C /* Assets.xcassets in Resources */,
-				582FB6FC260359E8007A646C /* Main.storyboard in Resources */,
+				58B263FA26132AC8008C0953 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,13 +309,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				58E6CE0E260CB3B8003C6A1A /* NetworkManager.m in Sources */,
+				58B263FF26132EB1008C0953 /* TasksViewController.m in Sources */,
 				58E6CDB726089244003C6A1A /* BookmarksViewController.m in Sources */,
 				58E6CE17260E0F1E003C6A1A /* Mediator.m in Sources */,
+				58B2640D261346CF008C0953 /* Task.m in Sources */,
+				58EA226B26135BDD007CD2B0 /* TaskViewModel.m in Sources */,
+				58B264112613583B008C0953 /* TasksMediator.m in Sources */,
 				58E6CE2726120C14003C6A1A /* BookmarksMediator.m in Sources */,
 				58E6CE12260DE6FA003C6A1A /* Bookmark.m in Sources */,
 				582FB707260359EF007A646C /* main.m in Sources */,
 				582FB6F3260359E8007A646C /* AppDelegate.m in Sources */,
 				582FB6FF260359E8007A646C /* ObjcEducationDiary.xcdatamodeld in Sources */,
+				58B2640726132EF7008C0953 /* TopicsViewController.m in Sources */,
 				582FB6F6260359E8007A646C /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -258,14 +328,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		582FB6FA260359E8007A646C /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				582FB6FB260359E8007A646C /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		582FB702260359EF007A646C /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

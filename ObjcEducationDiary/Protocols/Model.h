@@ -13,8 +13,7 @@
 
 @protocol Model
 - (NSString *) sid;
-
-// initWithDictionary - для сериализации
+- (id)initWithDictionary:(NSDictionary*) jsonObject : (NSString*) key;
 // + 2 метода для маппинга в кор дату
 
 @end

@@ -10,6 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BookmarksViewController : UITableViewController
+- (IBAction)addButtonPressed:(UIBarButtonItem *)sender;
 
 @end
 

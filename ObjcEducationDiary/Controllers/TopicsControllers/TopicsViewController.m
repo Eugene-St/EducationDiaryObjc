@@ -1,62 +1,34 @@
 //
-//  BookmarksViewController.m
+//  TopicsViewController.m
 //  ObjcEducationDiary
 //
-//  Created by Eugene St on 22.03.2021.
+//  Created by Eugene St on 30.03.2021.
 //
 
-#import "BookmarksViewController.h"
-#import "Bookmark.h"
-#import "Mediator.h"
-#import "BookmarksMediator.h"
+#import "TopicsViewController.h"
 
-#import "NetworkManager.h"
-
-@interface BookmarksViewController ()
-
-@property (strong, nonatomic) NSMutableArray<Bookmark *> *bookmarks;
-@property (strong, nonatomic) BookmarksMediator *mediator;
+@interface TopicsViewController ()
 
 @end
 
-@implementation BookmarksViewController
+@implementation TopicsViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self loadData];
 }
-
-- (void)loadData {
-    _mediator = BookmarksMediator.new;
-    self.bookmarks = NSMutableArray.new;
-    
-    [_mediator fetchData:^(id  _Nonnull object, NSError * _Nonnull err) {
-        
-        for ( NSString *key in [object allKeys]) {
-            Bookmark *bookmark = Bookmark.new;
-            bookmark = [bookmark initWithDictionary:object :key];
-            [self.bookmarks addObject:bookmark];
-        }
-        
-        [self.tableView reloadData];
-    }];
-}
-
-// private methods
 
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.bookmarks.count;
+#warning Incomplete implementation, return the number of rows
+    return 0;
 }
 
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: @"bookmarkCell" forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"topicCell" forIndexPath:indexPath];
     
-    Bookmark *bookmark = self.bookmarks[indexPath.row];
-    
-    cell.textLabel.text = bookmark.name;
-    cell.detailTextLabel.text = bookmark.text;
+    // Configure the cell...
     
     return cell;
 }
@@ -70,19 +42,17 @@
 }
 */
 
-
+/*
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        
-        NSLog(@"Deleted row");
-        
-        
-        
-//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        // Delete the row from the data source
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
+        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }   
 }
-}
-
+*/
 
 /*
 // Override to support rearranging the table view.

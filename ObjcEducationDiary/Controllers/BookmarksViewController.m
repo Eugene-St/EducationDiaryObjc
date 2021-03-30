@@ -8,13 +8,14 @@
 #import "BookmarksViewController.h"
 #import "Bookmark.h"
 #import "Mediator.h"
+#import "BookmarksMediator.h"
 
 #import "NetworkManager.h"
 
 @interface BookmarksViewController ()
 
 @property (strong, nonatomic) NSMutableArray<Bookmark *> *bookmarks;
-@property (strong, nonatomic) Mediator *mediator;
+@property (strong, nonatomic) BookmarksMediator *mediator;
 
 @end
 
@@ -25,31 +26,23 @@
     [self loadData];
 }
 
-// private methods
--(void)loadData {
+- (void)loadData {
+    _mediator = BookmarksMediator.new;
     self.bookmarks = NSMutableArray.new;
-    _mediator = Mediator.new;
     
     [_mediator fetchData:^(id  _Nonnull object, NSError * _Nonnull err) {
-        NSLog(@"Fetched data: %@", object);
         
         for ( NSString *key in [object allKeys]) {
             Bookmark *bookmark = Bookmark.new;
-            NSString *name = object[key][@"name"];
-            NSString *text = object[key][@"text"];
-            NSString *identifier = object[key][@"id"];
-            
-            bookmark.name = name;
-            bookmark.text = text;
-            bookmark.identifier = identifier;
-            
+            bookmark = [bookmark initWithDictionary:object :key];
             [self.bookmarks addObject:bookmark];
-        };
+        }
         
-        self.tableView.reloadData;
-        
+        [self.tableView reloadData];
     }];
 }
+
+// private methods
 
 #pragma mark - Table view data source
 

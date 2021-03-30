@@ -10,6 +10,19 @@
 
 @implementation Mediator
 
+// init
+- (instancetype)initWithPathForUpdate:(NSString *)pathForUpdate pathForFetch:(NSString *)pathForFetch {
+    self = [super init];
+    
+    if (self) {
+        _pathForUpdate = pathForUpdate;
+        _pathForFetch = pathForFetch;
+    }
+    return self;
+}
+
+
+// parse
 - (id)parseJSON:(NSData *)data {
     NSError *errr;
     
@@ -23,18 +36,38 @@
     return objectJson;
 };
 
-- (void) fetchData: (void (^)(id _Nonnull, NSError * _Nonnull))completionBlock {
-    
-    [NetworkManager getRequest: @"bookmarks.json"
-                              :^(NSData * _Nonnull dat, NSError * _Nonnull err) {
+- (void)fetchData:(void (^)(id _Nonnull, NSError * _Nonnull))completionBlock {
+    [self fetchDataFromNetwork:completionBlock];
+}
 
-        NSData *decodedData = [self parseJSON:dat];
-        completionBlock(decodedData, nil);
-
+// private Fetch from Network
+- (void)fetchDataFromNetwork: (void(^)(id, NSError*))completionBlock {
+    [NetworkManager getRequest:_pathForFetch :^(NSData * _Nonnull dat, NSError * _Nonnull err) {
+        [self recognizeResult:dat :err :^(NSData *dat, NSError *err) {
+            completionBlock(dat,err);
+        }];
     }];
 }
 
-//- (void) deleteData: 
+- (void)recognizeResult: (NSData*)data :(NSError*)error :(void(^)(NSData *dat, NSError *err))completionBlock {
+    if (data != nil) {
+        
+        NSData *decodedData;
+        
+        if ((decodedData = [self parseJSON:data])) {
+            completionBlock(decodedData, nil);
+        } else {
+            completionBlock(nil, error);
+        }
+    }
+}
+
+// deleteData
+- (void)deleteData:(id<Model>)model :(void (^)(id _Nonnull, NSError * _Nonnull))completionBlock {
+    [NetworkManager deleteRequest:_pathForUpdate :model.sid :^(id _Nonnull obj, NSError * _Nonnull err) {
+        NSLog(@"Hello");
+    }];
+}
 
     
 @end

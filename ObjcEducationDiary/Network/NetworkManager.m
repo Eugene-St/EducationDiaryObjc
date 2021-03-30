@@ -16,7 +16,7 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
 
 + (void) getRequest : (NSString *) path
                     : (void(^)(NSData *dat, NSError *err))completionBlock {
-
+    
     NSURL *hostURL = [NSURL URLWithString:hostURLPath];
     NSURL *url = [hostURL URLByAppendingPathComponent:path];
     
@@ -39,8 +39,9 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
         }] resume];
 }
 
-+ (void) deleteRequest:(NSString *)path :(NSString *)identificator
-                                        :(void (^)(id, NSError*))completionBlock {
++ (void) deleteRequest:(NSString *)path
+         identificator:(NSString *)identificator
+                      :(void (^)(id, NSError*))completionBlock {
 
     NSURL *hostURL = [NSURL URLWithString:hostURLPath];
     NSURL *pathURL = [hostURL URLByAppendingPathComponent:path];

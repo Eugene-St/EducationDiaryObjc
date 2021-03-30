@@ -18,6 +18,7 @@
 		58E6CE0E260CB3B8003C6A1A /* NetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E6CE0D260CB3B8003C6A1A /* NetworkManager.m */; };
 		58E6CE12260DE6FA003C6A1A /* Bookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E6CE11260DE6FA003C6A1A /* Bookmark.m */; };
 		58E6CE17260E0F1E003C6A1A /* Mediator.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E6CE16260E0F1E003C6A1A /* Mediator.m */; };
+		58E6CE2726120C14003C6A1A /* BookmarksMediator.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E6CE2626120C14003C6A1A /* BookmarksMediator.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,8 @@
 		58E6CE15260E0F1E003C6A1A /* Mediator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mediator.h; sourceTree = "<group>"; };
 		58E6CE16260E0F1E003C6A1A /* Mediator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Mediator.m; sourceTree = "<group>"; };
 		58E6CE1A2611C246003C6A1A /* Model.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
+		58E6CE2526120C14003C6A1A /* BookmarksMediator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BookmarksMediator.h; sourceTree = "<group>"; };
+		58E6CE2626120C14003C6A1A /* BookmarksMediator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BookmarksMediator.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,14 +76,15 @@
 		582FB6F0260359E8007A646C /* ObjcEducationDiary */ = {
 			isa = PBXGroup;
 			children = (
-				582FB72E2604ABF8007A646C /* Model */,
+				58B263F8261329DC008C0953 /* CoreData */,
 				58E6CDC7260898F1003C6A1A /* Network */,
 				58E6CDBA260892BC003C6A1A /* DataMediator */,
-				582FB7292604ABC1007A646C /* Controllers */,
+				582FB72E2604ABF8007A646C /* Model */,
 				582FB7282604ABA9007A646C /* Storyboards */,
+				582FB7292604ABC1007A646C /* Controllers */,
+				582FB72B2604ABDC007A646C /* SupportingFiles */,
 				582FB72D2604ABEA007A646C /* Source */,
 				58E6CE192611BE9E003C6A1A /* Protocols */,
-				582FB72B2604ABDC007A646C /* SupportingFiles */,
 			);
 			path = ObjcEducationDiary;
 			sourceTree = "<group>";
@@ -134,11 +138,20 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		58B263F8261329DC008C0953 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		58E6CDBA260892BC003C6A1A /* DataMediator */ = {
 			isa = PBXGroup;
 			children = (
 				58E6CE15260E0F1E003C6A1A /* Mediator.h */,
 				58E6CE16260E0F1E003C6A1A /* Mediator.m */,
+				58E6CE2526120C14003C6A1A /* BookmarksMediator.h */,
+				58E6CE2626120C14003C6A1A /* BookmarksMediator.m */,
 			);
 			path = DataMediator;
 			sourceTree = "<group>";
@@ -233,6 +246,7 @@
 				58E6CE0E260CB3B8003C6A1A /* NetworkManager.m in Sources */,
 				58E6CDB726089244003C6A1A /* BookmarksViewController.m in Sources */,
 				58E6CE17260E0F1E003C6A1A /* Mediator.m in Sources */,
+				58E6CE2726120C14003C6A1A /* BookmarksMediator.m in Sources */,
 				58E6CE12260DE6FA003C6A1A /* Bookmark.m in Sources */,
 				582FB707260359EF007A646C /* main.m in Sources */,
 				582FB6F3260359E8007A646C /* AppDelegate.m in Sources */,

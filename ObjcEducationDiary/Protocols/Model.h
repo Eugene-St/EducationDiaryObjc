@@ -11,10 +11,10 @@
 
 #endif /* Model_h */
 
-@protocol Model <NSCoding>
+@protocol Model
+- (NSString *) sid;
 
-- (NSString *) sid {
-    return sid;
-}
+// initWithDictionary - для сериализации
+// + 2 метода для маппинга в кор дату
 
 @end

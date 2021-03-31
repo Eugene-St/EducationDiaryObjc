@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)createNewData:(id<Model>) model
                      :(void(^)(id, NSError*))completionBlock;
 
+- (void)updateData:(id<Model>) model
+                     :(void(^)(id, NSError*))completionBlock;
+
 - (instancetype)initWithPathForUpdate:(NSString*)pathForUpdate pathForFetch:(NSString*)pathForFetch;
 
 @end

@@ -23,6 +23,11 @@ NS_ASSUME_NONNULL_BEGIN
                    : (NSDictionary *) body
                    : (void (^)(id, NSError*))completionBlock;
 
++ (void)patchRequest: (NSString *) path
+                    : (NSString *) identificator
+                    : (NSDictionary *) body
+                    : (void (^)(id, NSError*))completionBlock;
+
 @end
 
 NS_ASSUME_NONNULL_END

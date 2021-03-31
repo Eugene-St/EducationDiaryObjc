@@ -33,12 +33,10 @@
     
     if (_text) {
         bookmark[@"text"] = _text;
-        
     }
     
     if (_sid) {
         bookmark[@"id"] = _sid;
-        
     }
     
     if ([NSJSONSerialization isValidJSONObject:bookmark]) {

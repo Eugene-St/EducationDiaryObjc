@@ -21,6 +21,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self loadData];
+    
+    UILongPressGestureRecognizer *longGestureRecognizer = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressed:)];
+    [self.tableView addGestureRecognizer:longGestureRecognizer];
 }
 
 #pragma mark - Table view data source
@@ -62,25 +65,65 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
-
 // IBActions
 - (void)addButtonPressed:(UIBarButtonItem *)sender {
-    UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"Add bookmark" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    [self showAddAlertController];
+}
+
+// alert to create bookmark
+- (void)showAddAlertController {
+    [self showAlert:@"Add bookmark" :@"Please enter Bookmark name and text" :nil];
+}
+
+// alert to edit bookmark
+- (void)showEditAlertController:(Bookmark *)bookmark {
+    [self showAlert:@"Edit bookmark" :@"You may edit the bookmark" :bookmark];
+}
+
+// alert
+- (void)showAlert: (NSString *)title :(NSString *)message :(Bookmark * _Nullable)bookmark {
+    UIAlertController *ac = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"Ok pressed");
-
         
-        [self createNewData:ac];
+        if (bookmark) {
+            [self updateBookmark:bookmark :ac];
+        } else {
+            [self createNewBookmark:ac];
+        }
+    }];
+    
+    [ac addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull nameTextField) {
+        nameTextField.keyboardType = UIKeyboardTypeAlphabet;
+        nameTextField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
+        nameTextField.placeholder = @"name - optional";
+        nameTextField.text = bookmark.name;
+        
+        if (bookmark) {
+            
+            [NSNotificationCenter.defaultCenter addObserverForName:UITextFieldTextDidChangeNotification object:nameTextField queue:NSOperationQueue.mainQueue usingBlock:^(NSNotification * _Nonnull note) {
+                
+                NSUInteger textCount = [[nameTextField.text stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet]length];
+                BOOL textIsNotEmpty = textCount > 0;
+                okAction.enabled = textIsNotEmpty;
+                
+            }];
+        }
+    }];
+    
+    [ac addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textTextField) {
+        textTextField.keyboardType = UIKeyboardTypeAlphabet;
+        textTextField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
+        textTextField.placeholder = @"text - required";
+        textTextField.text = bookmark.text;
+        
+        [NSNotificationCenter.defaultCenter addObserverForName:UITextFieldTextDidChangeNotification object:textTextField queue:NSOperationQueue.mainQueue usingBlock:^(NSNotification * _Nonnull note) {
+            
+            NSUInteger textCount = [[textTextField.text stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet]length];
+            BOOL textIsNotEmpty = textCount > 0;
+            okAction.enabled = textIsNotEmpty;
+            
+        }];
         
     }];
     
@@ -88,27 +131,33 @@
         NSLog(@"Cancel pressed");
     }];
     
-    [ac addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textTextField) {
-        textTextField.keyboardType = UIKeyboardTypeAlphabet;
-        textTextField.placeholder = @"text - required";
-    }];
-    
-    [ac addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull nameTextField) {
-        nameTextField.keyboardType = UIKeyboardTypeAlphabet;
-        nameTextField.placeholder = @"name - optional";
-    }];
-    
     [ac addAction:cancelAction];
+    okAction.enabled = NO;
     [ac addAction:okAction];
     [self presentViewController:ac animated:YES completion:nil];
 }
 
-- (void)createNewData: (UIAlertController *)alertController {
+// long press gesture recognize
+- (void)longPressed: (UILongPressGestureRecognizer*) sender {
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        CGPoint touchPoint = [sender locationInView:self.tableView];
+        
+        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:touchPoint];
+        
+        if (indexPath) {
+            Bookmark *bookmark = _bookmarks[indexPath.row];
+            [self showEditAlertController:bookmark];
+        }
+    }
+}
+
+// create new bookmark
+- (void)createNewBookmark: (UIAlertController *)ac {
     
     Bookmark *bookmark = Bookmark.new;
     
-    bookmark.name = alertController.textFields.firstObject.text;
-    bookmark.text = alertController.textFields.lastObject.text;
+    bookmark.name = ac.textFields.firstObject.text;
+    bookmark.text = ac.textFields.lastObject.text;
     NSNumber *timeStamp = [NSNumber numberWithInt:NSDate.timeIntervalSinceReferenceDate];
     bookmark.sid = [NSString stringWithFormat: @"%@", timeStamp];
     
@@ -120,6 +169,22 @@
     }];
 }
 
+- (void)updateBookmark:(Bookmark *)bookmark :(UIAlertController *)ac {
+    Bookmark *newBookmark = Bookmark.new;
+    newBookmark.name = ac.textFields.firstObject.text;
+    newBookmark.text = ac.textFields.lastObject.text;
+    newBookmark.sid = bookmark.sid;
+    
+    [_mediator updateData:newBookmark :^(id _Nonnull response, NSError * _Nonnull error) {
+        if (error == nil) {
+            NSUInteger newIndex = [_bookmarks indexOfObject:bookmark];
+            _bookmarks[newIndex] = newBookmark;
+            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:newIndex inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+        }
+    }];
+}
+
+// load data
 - (void)loadData {
     _mediator = BookmarksMediator.new;
     self.bookmarks = NSMutableArray.new;
@@ -130,10 +195,6 @@
             Bookmark *bookmark = Bookmark.new;
             bookmark = [bookmark initWithDictionary:object :key];
             [self.bookmarks addObject:bookmark];
-            
-            NSLog(@"name %@", bookmark.name);
-            NSLog(@"id %@", bookmark.sid);
-            NSLog(@"text %@", bookmark.text);
         }
         
         [self.tableView reloadData];

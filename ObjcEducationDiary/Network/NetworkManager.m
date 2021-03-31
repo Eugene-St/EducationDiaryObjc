@@ -93,4 +93,41 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
 
 }
 
++ (void)patchRequest:(NSString *)path :(NSString *)identificator :(NSDictionary *)body :(void (^)(id _Nullable, NSError * _Nullable ))completionBlock {
+    
+    NSURL *url = [[[[NSURL
+                    URLWithString:hostURLPath]
+                    URLByAppendingPathComponent:path]
+                    URLByAppendingPathComponent:identificator]
+                    URLByAppendingPathComponent:@".json"];
+    
+    BOOL isValidURL = [NSURLConnection canHandleRequest:[NSURLRequest requestWithURL:url]];
+    
+    if (!isValidURL) {
+        completionBlock(nil, [NSError errorWithDomain:@"" code:0 userInfo:@{NSLocalizedDescriptionKey: @"Host url is invalid@"}]);
+    }
+    
+    NSDictionary *putData = body;
+    
+    NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
+    
+    urlRequest.HTTPMethod = @"PATCH";
+    
+    NSError *error = nil;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:putData options:NSJSONWritingPrettyPrinted error:&error];
+    urlRequest.HTTPBody = data;
+    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    
+    [[NSURLSession.sharedSession dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    
+        if (error) {
+            completionBlock(nil, error);
+        }
+        
+        completionBlock(response, nil);
+    
+    }]resume];
+    
+}
+
 @end

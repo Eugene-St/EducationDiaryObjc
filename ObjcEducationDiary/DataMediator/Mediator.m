@@ -63,7 +63,7 @@
 }
 
 // deleteData
-- (void)deleteData:(id<Model>)model :(void (^)(id _Nonnull, NSError * _Nonnull))completionBlock {
+- (void)deleteData:(id<Model>)model :(void (^)(id _Nullable, NSError * _Nullable))completionBlock {
     [NetworkManager deleteRequest:_pathForUpdate :model.sid :^(id _Nonnull obj, NSError * _Nonnull err) {
         
         if (obj != nil) {
@@ -78,6 +78,42 @@
         }
         
     }];
+}
+
+- (void)createNewData:(id<Model>)model :(void (^)(id _Nullable, NSError * _Nullable))completionBlock {
+    
+    NSError *dataError = nil;
+//    NSData *data = [NSJSONSerialization dataWithJSONObject:model options:NSJSONWritingPrettyPrinted error:&dataError];
+    
+    NSData *data = [model jsonData];
+    
+    if (dataError) {
+        completionBlock(nil, dataError);
+        NSLog(@"Error while converting to data");
+    }
+    
+    NSError *jsonError = nil;
+    id json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&jsonError];
+    
+    if (jsonError) {
+        completionBlock(nil, jsonError);
+        NSLog(@"Error while converting to json");
+    }
+    
+    [NetworkManager putRequest:_pathForUpdate :model.sid :json :^(id _Nullable response, NSError * _Nullable error) {
+        if (error == nil) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(response, nil);
+            });
+            
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(nil, error);
+            });
+        }
+    }];
+    
+    
 }
 
     

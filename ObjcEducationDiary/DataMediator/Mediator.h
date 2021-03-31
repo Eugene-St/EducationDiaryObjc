@@ -15,9 +15,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *pathForFetch;
 @property (strong, nonatomic) NSString *pathForUpdate;
 
-- (void)fetchData: (void(^)(id object, NSError *err))completionBlock;
+- (void)fetchData:(void(^)(id object, NSError *err))completionBlock;
+
 - (void)deleteData:(id<Model>) model
                   :(void(^)(id, NSError*))completionBlock;
+
+- (void)createNewData:(id<Model>) model
+                     :(void(^)(id, NSError*))completionBlock;
 
 - (instancetype)initWithPathForUpdate:(NSString*)pathForUpdate pathForFetch:(NSString*)pathForFetch;
 

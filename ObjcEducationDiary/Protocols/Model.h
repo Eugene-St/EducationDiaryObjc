@@ -14,6 +14,7 @@
 @protocol Model
 - (NSString *) sid;
 - (id)initWithDictionary:(NSDictionary*) jsonObject : (NSString*) key;
+- (NSData *)jsonData;
 // + 2 метода для маппинга в кор дату
 
 @end

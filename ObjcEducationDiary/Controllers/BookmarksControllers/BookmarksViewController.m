@@ -48,12 +48,18 @@
         
         [_mediator deleteData:bookmark :^(id _Nonnull result, NSError * _Nonnull error) {
             
-            if (result) {
+            if (error == nil) {
                 [self.bookmarks removeObjectAtIndex:indexPath.row];
                 [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                NSLog(@"removed");
             }
         }];
+        
     }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 /*
@@ -72,6 +78,10 @@
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSLog(@"Ok pressed");
+
+        
+        [self createNewData:ac];
+        
     }];
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -88,9 +98,26 @@
         nameTextField.placeholder = @"name - optional";
     }];
     
-    [ac addAction:okAction];
     [ac addAction:cancelAction];
+    [ac addAction:okAction];
     [self presentViewController:ac animated:YES completion:nil];
+}
+
+- (void)createNewData: (UIAlertController *)alertController {
+    
+    Bookmark *bookmark = Bookmark.new;
+    
+    bookmark.name = alertController.textFields.firstObject.text;
+    bookmark.text = alertController.textFields.lastObject.text;
+    NSNumber *timeStamp = [NSNumber numberWithInt:NSDate.timeIntervalSinceReferenceDate];
+    bookmark.sid = [NSString stringWithFormat: @"%@", timeStamp];
+    
+    [_mediator createNewData:bookmark :^(id _Nonnull response, NSError * _Nonnull error) {
+        if (error == nil) {
+            [_bookmarks insertObject:bookmark atIndex:0];
+            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+        }
+    }];
 }
 
 - (void)loadData {
@@ -103,6 +130,10 @@
             Bookmark *bookmark = Bookmark.new;
             bookmark = [bookmark initWithDictionary:object :key];
             [self.bookmarks addObject:bookmark];
+            
+            NSLog(@"name %@", bookmark.name);
+            NSLog(@"id %@", bookmark.sid);
+            NSLog(@"text %@", bookmark.text);
         }
         
         [self.tableView reloadData];

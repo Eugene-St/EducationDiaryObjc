@@ -10,7 +10,6 @@
 typedef void(^myCompletion)(NSObject*, NSError*);
 
 NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.com/";
-//NSURL *hostURLfd = [NSURL URLWithString:hostURLPath];
 
 @implementation NetworkManager
 
@@ -39,7 +38,7 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
         }] resume];
 }
 
-+ (void)deleteRequest:(NSString *)path :(NSString *)identificator :(void (^)(id _Nonnull, NSError * _Nonnull))completionBlock {
++ (void)deleteRequest:(NSString *)path :(NSString *)identificator :(void (^)(id _Nullable, NSError * _Nullable))completionBlock {
     
     NSURL *hostURL = [NSURL URLWithString:hostURLPath];
     NSURL *pathURL = [hostURL URLByAppendingPathComponent:path];
@@ -65,12 +64,33 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
                    : (NSDictionary *) body
                    : (void (^)(id, NSError*))completionBlock {
     
-    NSURL *hostURL = [NSURL URLWithString:hostURLPath];
-    NSURL *pathURL = [hostURL URLByAppendingPathComponent:path];
-    NSURL *idURL = [pathURL URLByAppendingPathComponent:identificator];
-    NSURL *url = [idURL URLByAppendingPathComponent:@".json"];
+    NSURL *url = [[[[NSURL
+                    URLWithString:hostURLPath]
+                    URLByAppendingPathComponent:path]
+                    URLByAppendingPathComponent:identificator]
+                    URLByAppendingPathComponent:@".json"];
     
+    NSDictionary *putData = body;
     
+    NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
+    
+    urlRequest.HTTPMethod = @"PUT";
+    
+    NSError *error = nil;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:putData options:NSJSONWritingPrettyPrinted error:&error];
+    urlRequest.HTTPBody = data;
+    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    
+    [[NSURLSession.sharedSession dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    
+        if (error) {
+            completionBlock(nil, error);
+        }
+        
+        completionBlock(response, nil);
+    
+    }]resume];
+
 }
 
 @end

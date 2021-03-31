@@ -60,9 +60,10 @@
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        Task* task = _tasks[indexPath.row];
-        [_mediator deleteData:task :^(id _Nonnull result, NSError * _Nonnull error) {
-            [self.tasks removeObjectAtIndex:indexPath.row];
+        
+        TaskViewModel *model = _taskViewModels[indexPath.row];
+        [_mediator deleteData:model.task :^(id _Nonnull result, NSError * _Nonnull error) {
+            [self.taskViewModels removeObjectAtIndex:indexPath.row];
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         }];
     }

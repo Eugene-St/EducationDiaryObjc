@@ -11,8 +11,8 @@
 #endif /* Model_h */
 
 @protocol Model
-- (NSString *) sid;
-- (id)initWithDictionary:(NSDictionary*) jsonObject : (NSString*) key;
+- (NSString *) sid; //todo property
+- (id)initWithDictionary:(NSDictionary*) jsonObject;
 - (NSData *)jsonData;
 
 // + 2 метода для маппинга в кор дату

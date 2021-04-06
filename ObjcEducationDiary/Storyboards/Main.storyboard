@@ -591,27 +591,25 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.92374064757798802" green="0.92374064757798802" blue="0.92374064757798802" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="taskCell" rowHeight="80" id="7eB-oj-i8N" customClass="TasksCell" customModule="ObjcEducationDiary" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="taskCell" rowHeight="80" id="7eB-oj-i8N" customClass="TaskCell">
                                 <rect key="frame" x="0.0" y="28" width="428" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7eB-oj-i8N" id="OOD-NH-oQV">
                                     <rect key="frame" x="0.0" y="0.0" width="428" height="80"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zYN-vs-NPM">
+                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zYN-vs-NPM">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         </view>
                                     </subviews>
                                     <color key="backgroundColor" red="0.92374064757798802" green="0.92374064757798802" blue="0.92374064757798802" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <variation key="default">
-                                        <mask key="subviews">
-                                            <exclude reference="zYN-vs-NPM"/>
-                                        </mask>
-                                    </variation>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.92374064759999996" green="0.92374064759999996" blue="0.92374064759999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <outlet property="progressView" destination="zYN-vs-NPM" id="Q4T-xw-a4c"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -622,8 +620,14 @@
                     <navigationItem key="navigationItem" title="Tasks" id="Twb-NO-ODu">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="gfs-s6-IEc">
                             <color key="tintColor" red="0.80648976559999996" green="0.7222248912" blue="0.56821578740000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="addButtonPressed:" destination="2I2-0T-YzL" id="29r-WX-8U7"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="addButton" destination="gfs-s6-IEc" id="ilN-Gj-9Jf"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vbf-h7-YEv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -632,7 +636,7 @@
         <!--2.2-->
         <scene sceneID="xtz-hH-dJZ">
             <objects>
-                <viewController storyboardIdentifier="tasksPopVC" id="sMo-av-O7u" userLabel="2.2" customClass="TasksSecondViewController" customModule="ObjcEducationDiary" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="tasksPopVC" id="sMo-av-O7u" userLabel="2.2" customClass="TasksSecondViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="J30-pV-rtN">
                         <rect key="frame" x="0.0" y="0.0" width="380" height="400"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -666,7 +670,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="saveButtonPressed:" destination="sMo-av-O7u" eventType="touchUpInside" id="jRw-aH-fSf"/>
+                                    <action selector="saveButtonPressed:" destination="sMo-av-O7u" eventType="touchUpInside" id="PtS-dM-cdw"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="nsZ-rC-74x">
@@ -684,7 +688,7 @@
                                         <color key="maximumTrackTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="thumbTintColor" red="0.80648976559999996" green="0.7222248912" blue="0.56821578740000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <action selector="progressSliderPressed:" destination="sMo-av-O7u" eventType="valueChanged" id="s1b-ii-IIQ"/>
+                                            <action selector="progressSliderPressed:" destination="sMo-av-O7u" eventType="valueChanged" id="360-7l-fgp"/>
                                         </connections>
                                     </slider>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TqM-A6-hUd">
@@ -725,18 +729,19 @@
                             <constraint firstItem="Bc2-vf-S1T" firstAttribute="leading" secondItem="mqP-Xk-sfh" secondAttribute="leading" constant="20" id="oeg-kS-nWy"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="nuO-2Z-3fn"/>
                     <value key="contentSizeForViewInPopover" type="size" width="250" height="350"/>
                     <size key="freeformSize" width="380" height="400"/>
                     <connections>
-                        <outlet property="descriptionTextField" destination="Bc2-vf-S1T" id="spa-Pu-riz"/>
-                        <outlet property="progressLabel" destination="toZ-T5-dkd" id="Nsf-yq-q9m"/>
-                        <outlet property="progressSlider" destination="f0K-N7-fGl" id="Lom-aQ-dei"/>
-                        <outlet property="saveButton" destination="qXG-eC-sXu" id="hfl-G6-Vww"/>
+                        <outlet property="descriptionTextField" destination="Bc2-vf-S1T" id="Hn7-JE-pdT"/>
+                        <outlet property="progressLabel" destination="toZ-T5-dkd" id="JAK-IZ-ASe"/>
+                        <outlet property="progressSlider" destination="f0K-N7-fGl" id="jv3-MF-bAP"/>
+                        <outlet property="saveButton" destination="qXG-eC-sXu" id="m9Y-la-YPz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OqG-KQ-aYf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1877" y="304"/>
+            <point key="canvasLocation" x="1736" y="270"/>
         </scene>
         <!--3.1-->
         <scene sceneID="0ey-vl-s8d">

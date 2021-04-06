@@ -9,13 +9,13 @@
 
 @implementation Bookmark
 
-- (id)initWithDictionary:(NSDictionary*) jsonObject :(NSString*) key {
+- (id)initWithDictionary:(NSDictionary*) jsonObject {
     
     self = [super init];
     if (self) {
-        NSString *name = jsonObject[key][@"name"];
-        NSString *text = jsonObject[key][@"text"];
-        NSString *sid = jsonObject[key][@"id"];
+        NSString *name = jsonObject[@"name"];
+        NSString *text = jsonObject[@"text"];
+        NSString *sid = jsonObject[@"id"]; //todo убрать прослойку
         self.name = name;
         self.text = text;
         self.sid = sid;

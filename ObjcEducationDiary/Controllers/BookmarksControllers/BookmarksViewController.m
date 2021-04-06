@@ -7,13 +7,12 @@
 
 #import "BookmarksViewController.h"
 #import "Bookmark.h"
+#import "Alert.h"
 #import "BookmarksMediator.h"
 
 @interface BookmarksViewController ()
-
 @property (strong, nonatomic) NSMutableArray<Bookmark *> *bookmarks;
 @property (strong, nonatomic) BookmarksMediator *mediator;
-
 @end
 
 @implementation BookmarksViewController
@@ -27,7 +26,6 @@
 }
 
 #pragma mark - Table view data source
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.bookmarks.count;
 }
@@ -54,7 +52,6 @@
             if (error == nil) {
                 [self.bookmarks removeObjectAtIndex:indexPath.row];
                 [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-                NSLog(@"removed");
             }
         }];
         
@@ -67,17 +64,7 @@
 
 // IBActions
 - (void)addButtonPressed:(UIBarButtonItem *)sender {
-    [self showAddAlertController];
-}
-
-// alert to create bookmark
-- (void)showAddAlertController {
     [self showAlert:@"Add bookmark" :@"Please enter Bookmark name and text" :nil];
-}
-
-// alert to edit bookmark
-- (void)showEditAlertController:(Bookmark *)bookmark {
-    [self showAlert:@"Edit bookmark" :@"You may edit the bookmark" :bookmark];
 }
 
 // alert
@@ -85,7 +72,6 @@
     UIAlertController *ac = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
         if (bookmark) {
             [self updateBookmark:bookmark :ac];
         } else {
@@ -100,7 +86,6 @@
         nameTextField.text = bookmark.name;
         
         if (bookmark) {
-            
             [NSNotificationCenter.defaultCenter addObserverForName:UITextFieldTextDidChangeNotification object:nameTextField queue:NSOperationQueue.mainQueue usingBlock:^(NSNotification * _Nonnull note) {
                 
                 NSUInteger textCount = [[nameTextField.text stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet]length];
@@ -124,13 +109,9 @@
             okAction.enabled = textIsNotEmpty;
             
         }];
-        
     }];
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"Cancel pressed");
-    }];
-    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:nil];
     [ac addAction:cancelAction];
     okAction.enabled = NO;
     [ac addAction:okAction];
@@ -146,7 +127,7 @@
         
         if (indexPath) {
             Bookmark *bookmark = _bookmarks[indexPath.row];
-            [self showEditAlertController:bookmark];
+            [self showAlert:@"Edit bookmark" :@"You may edit the bookmark" :bookmark];
         }
     }
 }
@@ -155,16 +136,18 @@
 - (void)createNewBookmark: (UIAlertController *)ac {
     
     Bookmark *bookmark = Bookmark.new;
-    
     bookmark.name = ac.textFields.firstObject.text;
     bookmark.text = ac.textFields.lastObject.text;
     NSNumber *timeStamp = [NSNumber numberWithInt:NSDate.timeIntervalSinceReferenceDate];
     bookmark.sid = [NSString stringWithFormat: @"%@", timeStamp];
     
+    __weak typeof(self) weakSelf = self;
     [_mediator createNewData:bookmark :^(id _Nonnull response, NSError * _Nonnull error) {
-        if (error == nil) {
-            [_bookmarks insertObject:bookmark atIndex:0];
-            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+        if (error) {
+            [Alert errorAlert:error];
+        } else {
+            [weakSelf.bookmarks insertObject:bookmark atIndex:0];
+            [weakSelf.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
         }
     }];
 }
@@ -175,11 +158,14 @@
     newBookmark.text = ac.textFields.lastObject.text;
     newBookmark.sid = bookmark.sid;
     
+    __weak typeof(self) weakSelf = self;
     [_mediator updateData:newBookmark :^(id _Nonnull response, NSError * _Nonnull error) {
-        if (error == nil) {
-            NSUInteger newIndex = [_bookmarks indexOfObject:bookmark];
-            _bookmarks[newIndex] = newBookmark;
-            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:newIndex inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+        if (error) {
+            [Alert errorAlert:error];
+        } else {
+            NSUInteger newIndex = [weakSelf.bookmarks indexOfObject:bookmark];
+            weakSelf.bookmarks[newIndex] = newBookmark;
+            [weakSelf.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:newIndex inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
         }
     }];
 }
@@ -189,15 +175,19 @@
     _mediator = BookmarksMediator.new;
     self.bookmarks = NSMutableArray.new;
     
+    __weak typeof(self) weakSelf = self;
     [_mediator fetchData:^(id  _Nonnull object, NSError * _Nonnull err) {
-        
-        for ( NSString *key in [object allKeys]) {
-            Bookmark *bookmark = Bookmark.new;
-            bookmark = [bookmark initWithDictionary:object :key];
-            [self.bookmarks addObject:bookmark];
+        if (err) {
+            [Alert errorAlert:err];
+        } else {
+            for ( NSString *key in [object allKeys]) {
+                Bookmark *bookmark = Bookmark.new;
+                bookmark = [bookmark initWithDictionary:object[key]];
+                [weakSelf.bookmarks addObject:bookmark];
+            }
+            
+            [weakSelf.tableView reloadData];
         }
-        
-        [self.tableView reloadData];
     }];
 }
 

@@ -13,6 +13,9 @@
 		582FB701260359EF007A646C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 582FB700260359EF007A646C /* Assets.xcassets */; };
 		582FB704260359EF007A646C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 582FB702260359EF007A646C /* LaunchScreen.storyboard */; };
 		582FB707260359EF007A646C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 582FB706260359EF007A646C /* main.m */; };
+		585B8DFD26172FC500A973CB /* Alert.m in Sources */ = {isa = PBXBuildFile; fileRef = 585B8DFC26172FC500A973CB /* Alert.m */; };
+		585B8E022617621A00A973CB /* TasksSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585B8E012617621A00A973CB /* TasksSecondViewController.m */; };
+		5864D7EB261606EC00807582 /* TaskCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5864D7EA261606EC00807582 /* TaskCell.m */; };
 		58B263FA26132AC8008C0953 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58B263F926132AC8008C0953 /* Main.storyboard */; };
 		58B263FF26132EB1008C0953 /* TasksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B263FE26132EB1008C0953 /* TasksViewController.m */; };
 		58B2640726132EF7008C0953 /* TopicsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B2640626132EF7008C0953 /* TopicsViewController.m */; };
@@ -37,6 +40,13 @@
 		582FB703260359EF007A646C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		582FB705260359EF007A646C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		582FB706260359EF007A646C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		585B8DFB26172FC500A973CB /* Alert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Alert.h; sourceTree = "<group>"; };
+		585B8DFC26172FC500A973CB /* Alert.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Alert.m; sourceTree = "<group>"; };
+		585B8E002617621A00A973CB /* TasksSecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TasksSecondViewController.h; sourceTree = "<group>"; };
+		585B8E012617621A00A973CB /* TasksSecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TasksSecondViewController.m; sourceTree = "<group>"; };
+		585B8E04261B033100A973CB /* ControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControllerDelegate.h; sourceTree = "<group>"; };
+		5864D7E9261606EC00807582 /* TaskCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskCell.h; sourceTree = "<group>"; };
+		5864D7EA261606EC00807582 /* TaskCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaskCell.m; sourceTree = "<group>"; };
 		58B263F926132AC8008C0953 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		58B263FD26132EB1008C0953 /* TasksViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TasksViewController.h; sourceTree = "<group>"; };
 		58B263FE26132EB1008C0953 /* TasksViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TasksViewController.m; sourceTree = "<group>"; };
@@ -99,7 +109,6 @@
 				582FB7292604ABC1007A646C /* Controllers */,
 				582FB72B2604ABDC007A646C /* SupportingFiles */,
 				582FB72D2604ABEA007A646C /* Source */,
-				58E6CE192611BE9E003C6A1A /* Protocols */,
 			);
 			path = ObjcEducationDiary;
 			sourceTree = "<group>";
@@ -119,6 +128,7 @@
 				58B2640426132EE6008C0953 /* TopicsControllers */,
 				58B2640326132ECC008C0953 /* TasksControllers */,
 				58B2640126132EB7008C0953 /* BookmarksControllers */,
+				585B8DFA26172FA900A973CB /* AlertController */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -147,11 +157,21 @@
 		582FB72E2604ABF8007A646C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				58E6CE1A2611C246003C6A1A /* Model.h */,
 				582FB6FD260359E8007A646C /* ObjcEducationDiary.xcdatamodeld */,
 				58EA226F26135BF1007CD2B0 /* Bookmark */,
 				58EA226D26135BEA007CD2B0 /* Task */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		585B8DFA26172FA900A973CB /* AlertController */ = {
+			isa = PBXGroup;
+			children = (
+				585B8DFB26172FC500A973CB /* Alert.h */,
+				585B8DFC26172FC500A973CB /* Alert.m */,
+			);
+			path = AlertController;
 			sourceTree = "<group>";
 		};
 		58B263F8261329DC008C0953 /* CoreData */ = {
@@ -175,6 +195,11 @@
 			children = (
 				58B263FD26132EB1008C0953 /* TasksViewController.h */,
 				58B263FE26132EB1008C0953 /* TasksViewController.m */,
+				5864D7E9261606EC00807582 /* TaskCell.h */,
+				5864D7EA261606EC00807582 /* TaskCell.m */,
+				585B8E002617621A00A973CB /* TasksSecondViewController.h */,
+				585B8E012617621A00A973CB /* TasksSecondViewController.m */,
+				585B8E04261B033100A973CB /* ControllerDelegate.h */,
 			);
 			path = TasksControllers;
 			sourceTree = "<group>";
@@ -208,14 +233,6 @@
 				58E6CE0D260CB3B8003C6A1A /* NetworkManager.m */,
 			);
 			path = Network;
-			sourceTree = "<group>";
-		};
-		58E6CE192611BE9E003C6A1A /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				58E6CE1A2611C246003C6A1A /* Model.h */,
-			);
-			path = Protocols;
 			sourceTree = "<group>";
 		};
 		58EA226D26135BEA007CD2B0 /* Task */ = {
@@ -318,8 +335,11 @@
 				58E6CE2726120C14003C6A1A /* BookmarksMediator.m in Sources */,
 				58E6CE12260DE6FA003C6A1A /* Bookmark.m in Sources */,
 				582FB707260359EF007A646C /* main.m in Sources */,
+				585B8DFD26172FC500A973CB /* Alert.m in Sources */,
+				585B8E022617621A00A973CB /* TasksSecondViewController.m in Sources */,
 				582FB6F3260359E8007A646C /* AppDelegate.m in Sources */,
 				582FB6FF260359E8007A646C /* ObjcEducationDiary.xcdatamodeld in Sources */,
+				5864D7EB261606EC00807582 /* TaskCell.m in Sources */,
 				58B2640726132EF7008C0953 /* TopicsViewController.m in Sources */,
 				582FB6F6260359E8007A646C /* SceneDelegate.m in Sources */,
 			);

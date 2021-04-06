@@ -11,8 +11,7 @@
 
 - (instancetype)init {
     if ((self = [super init])) {
-        self.pathForFetch = @"tasks.json";
-        self.pathForUpdate = @"tasks/";
+        self.path = @"tasks";
     }
     return self;
 }

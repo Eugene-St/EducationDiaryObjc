@@ -16,8 +16,9 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
 + (void) getRequest : (NSString *) path
                     : (void(^)(NSData *dat, NSError *err))completionBlock {
     
-    NSURL *hostURL = [NSURL URLWithString:hostURLPath];
-    NSURL *url = [hostURL URLByAppendingPathComponent:path];
+    NSURL *url = [[[NSURL URLWithString:hostURLPath]
+                          URLByAppendingPathComponent:path]
+                          URLByAppendingPathExtension:@"json"];
     
     [[NSURLSession.sharedSession dataTaskWithURL:url
                                      completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -28,22 +29,22 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
             return;
         }
         
-        if (data != nil) {
-            dispatch_async(dispatch_get_main_queue(), ^{
+        if (data) {
             completionBlock(data, nil);
-            });
-            NSLog(@"fetch success %@", data);
         }
             
         }] resume];
 }
+// todo: host, path, query, body
+
 
 + (void)deleteRequest:(NSString *)path :(NSString *)identificator :(void (^)(id _Nullable, NSError * _Nullable))completionBlock {
     
-    NSURL *hostURL = [NSURL URLWithString:hostURLPath];
-    NSURL *pathURL = [hostURL URLByAppendingPathComponent:path];
-    NSURL *idURL = [pathURL URLByAppendingPathComponent:identificator];
-    NSURL *url = [idURL URLByAppendingPathComponent:@".json"];
+    NSURL *url = [[[[NSURL
+                    URLWithString:hostURLPath]
+                    URLByAppendingPathComponent:path]
+                    URLByAppendingPathComponent:identificator]
+                    URLByAppendingPathExtension:@"json"];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
@@ -68,7 +69,7 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
                     URLWithString:hostURLPath]
                     URLByAppendingPathComponent:path]
                     URLByAppendingPathComponent:identificator]
-                    URLByAppendingPathComponent:@".json"];
+                    URLByAppendingPathExtension:@"json"];
     
     NSDictionary *putData = body;
     
@@ -95,16 +96,16 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
 
 + (void)patchRequest:(NSString *)path :(NSString *)identificator :(NSDictionary *)body :(void (^)(id _Nullable, NSError * _Nullable ))completionBlock {
     
-    NSURL *url = [[[[NSURL
-                    URLWithString:hostURLPath]
-                    URLByAppendingPathComponent:path]
-                    URLByAppendingPathComponent:identificator]
-                    URLByAppendingPathComponent:@".json"];
+    NSURL *url;
     
-    BOOL isValidURL = [NSURLConnection canHandleRequest:[NSURLRequest requestWithURL:url]];
-    
-    if (!isValidURL) {
-        completionBlock(nil, [NSError errorWithDomain:@"" code:0 userInfo:@{NSLocalizedDescriptionKey: @"Host url is invalid@"}]);
+    if (identificator) {
+        url = [[[[NSURL
+                   URLWithString:hostURLPath]
+                   URLByAppendingPathComponent:path]
+                   URLByAppendingPathComponent:identificator]
+                   URLByAppendingPathExtension:@"json"];
+    } else {
+        completionBlock(nil, [NSError errorWithDomain:@"Host url is invalid" code:0 userInfo:nil]);
     }
     
     NSDictionary *putData = body;
@@ -127,7 +128,6 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
         completionBlock(response, nil);
     
     }]resume];
-    
 }
 
 @end

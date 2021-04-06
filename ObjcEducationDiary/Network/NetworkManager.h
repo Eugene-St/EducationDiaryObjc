@@ -9,6 +9,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^completion)(id, NSError*);
+
 @interface NetworkManager : NSObject
 
 +(void) getRequest: (NSString *) path
@@ -16,17 +18,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 +(void) deleteRequest: (NSString *) path
                      : (NSString *) identificator
-                     : (void(^)(id, NSError*))completionBlock;
+                     : (completion)completionBlock;
 
 + (void) putRequest: (NSString *) path
                    : (NSString *) identificator
                    : (NSDictionary *) body
-                   : (void (^)(id, NSError*))completionBlock;
+                   : (completion)completionBlock;
 
 + (void)patchRequest: (NSString *) path
                     : (NSString *) identificator
                     : (NSDictionary *) body
-                    : (void (^)(id, NSError*))completionBlock;
+                    : (completion)completionBlock;
 
 @end
 

@@ -11,16 +11,13 @@
 @implementation Mediator
 
 // init
-- (instancetype)initWithPathForUpdate:(NSString *)pathForUpdate pathForFetch:(NSString *)pathForFetch {
+- (instancetype)initWithPath:(NSString *)path {
     self = [super init];
-    
     if (self) {
-        _pathForUpdate = pathForUpdate;
-        _pathForFetch = pathForFetch;
+        _path = path;
     }
     return self;
 }
-
 
 // parse
 - (id)parseJSON:(NSData *)data {
@@ -42,7 +39,7 @@
 
 // private Fetch from Network
 - (void)fetchDataFromNetwork: (void(^)(id, NSError*))completionBlock {
-    [NetworkManager getRequest:_pathForFetch :^(NSData * _Nonnull dat, NSError * _Nonnull err) {
+    [NetworkManager getRequest:_path :^(NSData * _Nonnull dat, NSError * _Nonnull err) {
         [self recognizeResult:dat :err :^(NSData *dat, NSError *err) {
             completionBlock(dat,err);
         }];
@@ -50,33 +47,45 @@
 }
 
 - (void)recognizeResult: (NSData*)data :(NSError*)error :(void(^)(NSData *dat, NSError *err))completionBlock {
-    if (data != nil) {
-        
+    
+    if (error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionBlock(nil, error);
+        });
+        return;
+    }
+    
+    if (data) {
         NSData *decodedData;
         
         if ((decodedData = [self parseJSON:data])) {
-            completionBlock(decodedData, nil);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(decodedData, nil);
+            });
         } else {
-            completionBlock(nil, error);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(nil, error);
+            });
         }
     }
 }
 
 // deleteData
 - (void)deleteData:(id<Model>)model :(void (^)(id _Nullable, NSError * _Nullable))completionBlock {
-    [NetworkManager deleteRequest:_pathForUpdate :model.sid :^(id _Nonnull obj, NSError * _Nonnull err) {
+    [NetworkManager deleteRequest:_path :model.sid :^(id _Nonnull obj, NSError * _Nonnull err) {
         
-        if (obj != nil) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionBlock(obj, nil);
-            });
-            
-        } else {
+        if (err) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionBlock(nil, err);
             });
+            return;
         }
         
+        if (obj) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(obj, nil);
+            });
+        }
     }];
 }
 
@@ -87,27 +96,32 @@
     NSData *data = [model jsonData];
     
     if (dataError) {
-        completionBlock(nil, dataError);
-        NSLog(@"Error while converting to data");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionBlock(nil, dataError);
+        });
     }
     
     NSError *jsonError = nil;
     id json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&jsonError];
     
     if (jsonError) {
-        completionBlock(nil, jsonError);
-        NSLog(@"Error while converting to json");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionBlock(nil, jsonError);
+        });
     }
     
-    [NetworkManager putRequest:_pathForUpdate :model.sid :json :^(id _Nullable response, NSError * _Nullable error) {
-        if (error == nil) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionBlock(response, nil);
-            });
-            
-        } else {
+    [NetworkManager putRequest:_path :model.sid :json :^(id _Nullable response, NSError * _Nullable error) {
+        
+        if (error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionBlock(nil, error);
+            });
+            return;
+        }
+        
+        if (response) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(response, nil);
             });
         }
     }];
@@ -119,33 +133,36 @@
     NSData *data = [model jsonData];
     
     if (dataError) {
-        completionBlock(nil, dataError);
-        NSLog(@"Error while converting to data");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionBlock(nil, dataError);
+        });
     }
     
     NSError *jsonError = nil;
     id json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&jsonError];
     
     if (jsonError) {
-        completionBlock(nil, jsonError);
-        NSLog(@"Error while converting to json");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionBlock(nil, jsonError);
+        });
     }
     
-    [NetworkManager putRequest:_pathForUpdate :model.sid :json :^(id _Nullable response, NSError * _Nullable error) {
-        if (error == nil) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionBlock(response, nil);
-            });
-            
-        } else {
+    [NetworkManager putRequest:_path :model.sid :json :^(id _Nullable response, NSError * _Nullable error) {
+        
+        if (error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionBlock(nil, error);
+            });
+        }
+        
+        if (response) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(response, nil);
             });
         }
     }];
 }
 
-    
 @end
 
 

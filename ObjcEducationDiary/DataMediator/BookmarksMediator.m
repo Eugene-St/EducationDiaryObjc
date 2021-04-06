@@ -11,8 +11,7 @@
 
 - (instancetype)init {
     if ((self = [super init])) {
-        self.pathForFetch = @"bookmarks.json";
-        self.pathForUpdate = @"bookmarks/";
+        self.path = @"bookmarks";
     }
     return self;
 }

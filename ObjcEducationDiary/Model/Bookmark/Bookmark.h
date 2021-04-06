@@ -18,8 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *text;
 @property (nonatomic, strong) NSString *sid;
 
-//- (id)initWithDictionary:(NSDictionary*) jsonObject : (NSString*) key;
-
 @end
 
 NS_ASSUME_NONNULL_END

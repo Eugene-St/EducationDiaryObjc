@@ -12,8 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Mediator : NSObject
 
-@property (strong, nonatomic) NSString *pathForFetch;
-@property (strong, nonatomic) NSString *pathForUpdate;
+@property (strong, nonatomic) NSString *path;
 
 - (void)fetchData:(void(^)(id object, NSError *err))completionBlock;
 
@@ -26,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateData:(id<Model>) model
                      :(void(^)(id, NSError*))completionBlock;
 
-- (instancetype)initWithPathForUpdate:(NSString*)pathForUpdate pathForFetch:(NSString*)pathForFetch;
+- (instancetype)initWithPath:(NSString*)path;
 
 @end
 

@@ -16,9 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *taskDescription;
 @property (nonatomic, strong) NSNumber *progress;
 @property (nonatomic, strong) NSString *sid;
-@property (nonatomic, strong) NSString *identifier;
-
-- (id)initWithDictionary:(NSDictionary*) jsonObject : (NSString*) key;
 
 @end
 

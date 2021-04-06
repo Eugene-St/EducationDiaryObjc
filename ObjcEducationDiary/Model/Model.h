@@ -14,7 +14,7 @@
 
 @property (nonatomic, strong) NSString *sid;
 - (id)initWithDictionary:(NSDictionary*) jsonObject;
-- (NSData *)jsonData;
+- (NSData *)mapJSONToDataWithError :(NSError **)error;
 
 // + 2 метода для маппинга в кор дату
 

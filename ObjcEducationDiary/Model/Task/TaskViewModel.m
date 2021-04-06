@@ -11,12 +11,11 @@
 
 @implementation TaskViewModel
 
-- (id)initWithTask:(Task*) task :(NSString*) key {
+- (id)initWithTask:(Task*)task {
     
     self = [super init];
     if (self) {
         self.task = task;
-        self.key = key;
     }
     return self;
 }

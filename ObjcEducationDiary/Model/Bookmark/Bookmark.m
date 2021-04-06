@@ -31,7 +31,7 @@
     return self;
 }
 
-- (NSData *)jsonData {
+- (NSData *)mapJSONToDataWithError:(NSError *__autoreleasing *)error {
     NSMutableDictionary *bookmark = NSMutableDictionary.new;
     
     if (_name) {
@@ -49,8 +49,10 @@
     if ([NSJSONSerialization isValidJSONObject:bookmark]) {
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:bookmark
                                                            options:0
-                                                             error:nil];
+                                                             error:error];
         return jsonData;
+    } else {
+        *error = [NSError errorWithDomain:@"Failed to serialize model" code:100 userInfo:nil];
     }
     return nil;
 }

@@ -7,14 +7,13 @@
 
 #import "NetworkManager.h"
 
-typedef void(^myCompletion)(NSObject*, NSError*);
+typedef void(^myCompletion)(NSData * _Nullable, NSError * _Nullable);
 NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.com/";
 
 @implementation NetworkManager
 
 #pragma mark - GET request
-+ (void) getRequest : (NSString *) path
-                    : (void(^)(NSData *dat, NSError *err))completionBlock {
++ (void) getRequest:(NSString *)path :(myCompletion)completionBlock {
     NSURL *url = [[[NSURL URLWithString:hostURLPath]
                    URLByAppendingPathComponent:path]
                   URLByAppendingPathExtension:@"json"];
@@ -23,10 +22,7 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
                                completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
             completionBlock(nil, error);
-            return;
-        }
-        
-        if (data) {
+        } else {
             completionBlock(data, nil);
         }
     }] resume];
@@ -43,9 +39,9 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod: @"DELETE"];
     [[NSURLSession.sharedSession dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if(error != nil) {
+        
+        if (error) {
             completionBlock(nil, error);
-            
         } else {
             completionBlock(response, nil);
         }
@@ -53,22 +49,15 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
 }
 
 #pragma mark - PUT request
-+ (void) putRequest: (NSString *) path
-                   : (NSString *) identificator
-                   : (NSDictionary *) body
-                   : (void (^)(id, NSError*))completionBlock {
-    
++ (void)putRequest:(NSString *)path :(NSString *)identificator :(NSData *)data :(completion)completionBlock {
     NSURL *url = [[[[NSURL
                      URLWithString:hostURLPath]
                     URLByAppendingPathComponent:path]
                    URLByAppendingPathComponent:identificator]
                   URLByAppendingPathExtension:@"json"];
     
-    NSDictionary *putData = body;
     NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
     urlRequest.HTTPMethod = @"PUT";
-    NSError *error = nil;
-    NSData *data = [NSJSONSerialization dataWithJSONObject:putData options:NSJSONWritingPrettyPrinted error:&error];
     urlRequest.HTTPBody = data;
     [urlRequest setValue:@"application/json" forHTTPHeaderField:@"content-type"];
     
@@ -79,11 +68,11 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
         completionBlock(response, nil);
         
     }]resume];
-    
 }
 
 #pragma mark - PATCH request
-+ (void)patchRequest:(NSString *)path :(NSString *)identificator :(NSDictionary *)body :(void (^)(id _Nullable, NSError * _Nullable ))completionBlock {
+
++ (void)patchRequest:(NSString *)path :(NSString *)identificator :(NSData *)data :(completion)completionBlock {
     NSURL *url;
     
     if (identificator) {
@@ -97,11 +86,8 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
         completionBlock(nil, [NSError errorWithDomain:@"Host url is invalid" code:0 userInfo:nil]);
     }
     
-    NSDictionary *putData = body;
     NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
     urlRequest.HTTPMethod = @"PATCH";
-    NSError *error = nil;
-    NSData *data = [NSJSONSerialization dataWithJSONObject:putData options:NSJSONWritingPrettyPrinted error:&error];
     urlRequest.HTTPBody = data;
     [urlRequest setValue:@"application/json" forHTTPHeaderField:@"content-type"];
     

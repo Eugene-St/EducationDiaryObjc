@@ -14,7 +14,7 @@
     
     if (self) {
         NSNumber *createdOn = jsonObject[@"createdOn"];
-        if (createdOn && [createdOn isKindOfClass:NSString.class]) {
+        if (createdOn && [createdOn isKindOfClass:NSNumber.class]) {
             self.createdOn = createdOn;
         }
         
@@ -29,14 +29,14 @@
         }
         
         NSNumber *progress = jsonObject[@"progress"];
-        if (progress && [progress isKindOfClass:NSString.class]) {
+        if (progress && [progress isKindOfClass:NSNumber.class]) {
             self.progress = progress;
         }
     }
     return self;
 }
 
-- (NSData *)jsonData {
+- (NSData *)mapJSONToDataWithError:(NSError *__autoreleasing *)error {
     NSMutableDictionary *task = NSMutableDictionary.new;
     
     if (_createdOn) {
@@ -58,8 +58,10 @@
     if ([NSJSONSerialization isValidJSONObject:task]) {
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:task
                                                            options:0
-                                                             error:nil];
+                                                             error:error];
         return jsonData;
+    } else {
+        *error = [NSError errorWithDomain:@"Failed to serialize model" code:100 userInfo:nil];
     }
     return nil;
 }

@@ -28,11 +28,11 @@
 @synthesize refreshControl;
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
     self.tableView.estimatedRowHeight = 60.0;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     _mediator = TasksMediator.new;
     self.taskViewModels = NSMutableArray.new;
-    [super viewDidLoad];
     [self loadData];
     
     UILongPressGestureRecognizer *longGestureRecognizer = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressed:)];
@@ -87,14 +87,13 @@
 - (void)loadData {
     __weak typeof(self) weakSelf = self;
     
-    [_mediator fetchData:^(id  _Nonnull object, NSError * _Nonnull error) {
+    [_mediator fetchData:^(id  _Nonnull tasks, NSError * _Nonnull error) {
         if (error) {
             [Alert errorAlert:error];
         
         } else {
-            for ( NSString *key in [object allKeys]) {
-                Task *task = [[Task alloc] initWithDictionary:object[key]];
-                TaskViewModel *model = [[TaskViewModel alloc]initWithTask:task :key];
+            for (Task *task in tasks) {
+                TaskViewModel *model = [[TaskViewModel alloc]initWithTask:task];
                 [weakSelf.taskViewModels addObject:model];
             }
             [weakSelf.tableView reloadData];
@@ -167,7 +166,7 @@
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:newIndex inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
     
     } else {
-        TaskViewModel *newTaskModel = [[TaskViewModel alloc]initWithTask:task :task.sid];
+        TaskViewModel *newTaskModel = [[TaskViewModel alloc]initWithTask:task];
         [_taskViewModels insertObject:newTaskModel atIndex:0];
         [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
     }

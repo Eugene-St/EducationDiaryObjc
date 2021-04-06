@@ -175,16 +175,12 @@
 - (void)loadData {
     __weak typeof(self) weakSelf = self;
     
-    [_mediator fetchData:^(id  _Nonnull object, NSError * _Nonnull error) {
+    [_mediator fetchData:^(id  _Nonnull bookmarks, NSError * _Nonnull error) {
         if (error) {
             [Alert errorAlert:error];
         
         } else {
-            for ( NSString *key in [object allKeys]) {
-                Bookmark *bookmark = Bookmark.new;
-                bookmark = [bookmark initWithDictionary:object[key]];
-                [weakSelf.bookmarks addObject:bookmark];
-            }
+            weakSelf.bookmarks = bookmarks;
             [weakSelf.tableView reloadData];
         }
     }];

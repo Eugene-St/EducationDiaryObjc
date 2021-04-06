@@ -6,12 +6,14 @@
 //
 
 #import "BookmarksMediator.h"
+#import "Bookmark.h"
 
 @implementation BookmarksMediator
 
 - (instancetype)init {
     if ((self = [super init])) {
         self.path = @"bookmarks";
+        self.modelClass = [Bookmark class];
     }
     return self;
 }

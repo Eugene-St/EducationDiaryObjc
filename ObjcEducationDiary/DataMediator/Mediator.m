@@ -7,18 +7,10 @@
 
 #import "Mediator.h"
 #import "NetworkManager.h"
-#import "Bookmark.h"
+#import "Model.h"
 
 #pragma mark - Implementation
 @implementation Mediator
-
-- (instancetype)initWithPath:(NSString *)path {
-    self = [super init];
-    if (self) {
-        _path = path;
-    }
-    return self;
-}
 
 - (instancetype)initWithPath:(NSString *)path modelCLass:(Class)modelCLass {
     self = [super init];
@@ -33,14 +25,16 @@
 - (id)parseJSON:(NSData *)data {
     NSError *errr;
     NSDictionary *objectJson = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&errr];
+    NSMutableArray<Model> *objects = [[NSMutableArray<Model> alloc] init];
     
-    id modelClass = [[_modelClass alloc]initWithDictionary:objectJson];
-    
-    
+    for ( NSString *key in [objectJson allKeys]) {
+        id modelClass = [[_modelClass alloc]initWithDictionary:objectJson[key]];
+        [objects addObject:modelClass];
+    }
     if (errr) {
         return nil;
     }
-    return objectJson;
+    return objects;
 };
 
 #pragma mark - Fetch data
@@ -72,7 +66,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionBlock(decodedData, nil);
             });
-        
+            
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionBlock(nil, error);
@@ -103,7 +97,7 @@
 #pragma mark - Create new data
 - (void)createNewData:(id<Model>)model :(void (^)(id _Nullable, NSError * _Nullable))completionBlock {
     NSError *dataError = nil;
-    NSData *data = [model jsonData];
+    NSData *data = [model mapJSONToDataWithError: &dataError];
     
     if (dataError) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -111,23 +105,13 @@
         });
     }
     
-    NSError *jsonError = nil;
-    id json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&jsonError];
-    if (jsonError) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionBlock(nil, jsonError);
-        });
-    }
-    
-    [NetworkManager putRequest:_path :model.sid :json :^(id _Nullable response, NSError * _Nullable error) {
+    [NetworkManager putRequest:_path :model.sid :data :^(id _Nullable response, NSError * _Nullable error) {
         if (error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionBlock(nil, error);
             });
-            return;
-        }
-        
-        if (response) {
+            
+        } else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionBlock(response, nil);
             });
@@ -138,7 +122,7 @@
 #pragma mark - Update data
 - (void)updateData:(id<Model>)model :(void (^)(id _Nullable, NSError * _Nullable))completionBlock {
     NSError *dataError = nil;
-    NSData *data = [model jsonData];
+    NSData *data = [model mapJSONToDataWithError: &dataError];
     
     if (dataError) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -146,22 +130,12 @@
         });
     }
     
-    NSError *jsonError = nil;
-    id json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&jsonError];
-    if (jsonError) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionBlock(nil, jsonError);
-        });
-    }
-    
-    [NetworkManager putRequest:_path :model.sid :json :^(id _Nullable response, NSError * _Nullable error) {
+    [NetworkManager patchRequest:_path :model.sid :data :^(id _Nullable response, NSError * _Nullable error) {
         if (error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionBlock(nil, error);
             });
-        }
-        
-        if (response) {
+        } else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionBlock(response, nil);
             });

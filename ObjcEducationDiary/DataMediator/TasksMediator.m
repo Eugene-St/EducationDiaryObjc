@@ -6,12 +6,14 @@
 //
 
 #import "TasksMediator.h"
+#import "Task.h"
 
 @implementation TasksMediator
 
 - (instancetype)init {
     if ((self = [super init])) {
         self.path = @"tasks";
+        self.modelClass = [Task class];
     }
     return self;
 }

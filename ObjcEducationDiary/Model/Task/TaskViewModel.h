@@ -17,7 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *key;
 @property (nonatomic, assign) UITableViewCellAccessoryType accessoryType;
 @property (nonatomic, strong) UIColor *color;
-
 - (id)initWithTask:(Task*) task :(NSString*) key;
 
 @end

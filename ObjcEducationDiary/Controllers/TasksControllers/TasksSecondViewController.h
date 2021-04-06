@@ -11,14 +11,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TasksSecondViewController : UIViewController
+@interface TasksSecondViewController : UIViewController <UITextFieldDelegate>
+
 @property (weak, nonatomic) IBOutlet UIButton *saveButton;
 @property (weak, nonatomic) IBOutlet UITextField *descriptionTextField;
 @property (weak, nonatomic) IBOutlet UILabel *progressLabel;
 @property (weak, nonatomic) IBOutlet UISlider *progressSlider;
 @property (strong, nonatomic) Task *task;
 @property (nonatomic, weak) id <TaskViewControllerDelegate> delegate;
-
 
 @end
 

@@ -10,23 +10,33 @@
 @implementation Task
 
 - (id)initWithDictionary:(NSDictionary*) jsonObject {
-    
     self = [super init];
+    
     if (self) {
-            NSNumber *createdOn = jsonObject[@"createdOn"];
-            NSString *taskDescription = jsonObject[@"description"];
-            NSString *sid = jsonObject[@"id"];
-            NSNumber *progress = jsonObject[@"progress"];
-        self.createdOn = createdOn;
-        self.progress = progress;
-        self.sid = sid;
-        self.taskDescription = taskDescription;
+        NSNumber *createdOn = jsonObject[@"createdOn"];
+        if (createdOn && [createdOn isKindOfClass:NSString.class]) {
+            self.createdOn = createdOn;
+        }
+        
+        NSString *taskDescription = jsonObject[@"description"];
+        if (taskDescription && [taskDescription isKindOfClass:NSString.class]) {
+            self.taskDescription = taskDescription;
+        }
+        
+        NSString *sid = jsonObject[@"id"];
+        if (sid && [sid isKindOfClass:NSString.class]) {
+            self.sid = sid;
+        }
+        
+        NSNumber *progress = jsonObject[@"progress"];
+        if (progress && [progress isKindOfClass:NSString.class]) {
+            self.progress = progress;
+        }
     }
     return self;
 }
 
 - (NSData *)jsonData {
-    
     NSMutableDictionary *task = NSMutableDictionary.new;
     
     if (_createdOn) {

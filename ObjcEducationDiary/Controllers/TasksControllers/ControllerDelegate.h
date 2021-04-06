@@ -13,5 +13,7 @@
 #endif /* ControllerDelegate_h */
 
 @protocol TaskViewControllerDelegate <NSObject>
-- (void)saveData:(Task *)task;
+
+- (void)fetchDataFromSecondVC:(Task *)task;
+
 @end

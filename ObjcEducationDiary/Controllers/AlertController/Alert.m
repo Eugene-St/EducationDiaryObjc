@@ -10,7 +10,6 @@
 @implementation Alert
 
 + (void)errorAlert:(NSError *)error {
-    
     NSString *newMessage = [NSString stringWithFormat:@"We cannot proceed%@", error];
     
     UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"Error" message:newMessage preferredStyle:UIAlertControllerStyleAlert];

@@ -9,7 +9,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BookmarksViewController : UITableViewController
+@interface BookmarksViewController : UITableViewController <UITextFieldDelegate>
+
 - (IBAction)addButtonPressed:(UIBarButtonItem *)sender;
 
 @end

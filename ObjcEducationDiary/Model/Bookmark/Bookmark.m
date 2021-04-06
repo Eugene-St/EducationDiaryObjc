@@ -14,17 +14,24 @@
     self = [super init];
     if (self) {
         NSString *name = jsonObject[@"name"];
+        if (name && [name isKindOfClass:NSString.class]) {
+            self.name = name;
+        }
+        
         NSString *text = jsonObject[@"text"];
-        NSString *sid = jsonObject[@"id"]; //todo убрать прослойку
-        self.name = name;
-        self.text = text;
-        self.sid = sid;
+        if (text && [text isKindOfClass:NSString.class]) {
+            self.text = text;
+        }
+        
+        NSString *sid = jsonObject[@"id"];
+        if (sid && [sid isKindOfClass:NSString.class]) {
+            self.sid = sid;
+        }
     }
     return self;
 }
 
 - (NSData *)jsonData {
-    
     NSMutableDictionary *bookmark = NSMutableDictionary.new;
     
     if (_name) {

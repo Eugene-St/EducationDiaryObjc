@@ -11,7 +11,8 @@
 #endif /* Model_h */
 
 @protocol Model
-- (NSString *) sid; //todo property
+
+@property (nonatomic, strong) NSString *sid;
 - (id)initWithDictionary:(NSDictionary*) jsonObject;
 - (NSData *)jsonData;
 

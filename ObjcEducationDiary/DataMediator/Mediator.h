@@ -13,19 +13,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Mediator : NSObject
 
 @property (strong, nonatomic) NSString *path;
-
+@property (assign, nonatomic) Class modelClass;
 - (void)fetchData:(void(^)(id object, NSError *err))completionBlock;
-
-- (void)deleteData:(id<Model>) model
-                  :(void(^)(id, NSError*))completionBlock;
-
-- (void)createNewData:(id<Model>) model
-                     :(void(^)(id, NSError*))completionBlock;
-
-- (void)updateData:(id<Model>) model
-                     :(void(^)(id, NSError*))completionBlock;
-
-- (instancetype)initWithPath:(NSString*)path;
+- (void)deleteData:(id<Model>)model :(void(^)(id, NSError*))completionBlock;
+- (void)createNewData:(id<Model>)model :(void(^)(id, NSError*))completionBlock;
+- (void)updateData:(id<Model>)model :(void(^)(id, NSError*))completionBlock;
+- (instancetype)initWithPath:(NSString*)path modelCLass:(Class)modelCLass;
 
 @end
 

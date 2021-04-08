@@ -29,10 +29,9 @@
     [self loadData];
     UILongPressGestureRecognizer *longGestureRecognizer = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressed:)];
     [self.tableView addGestureRecognizer:longGestureRecognizer];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-[super viewWillAppear:animated];
+    
+    [self updateUIwithNetworkStatus];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(internetAppeared:)
                                                  name:@"InternetAppeared"
@@ -42,10 +41,22 @@
                                              selector:@selector(internetDisappeared:)
                                                  name:@"InternetDisappeared"
                                                object:nil];
- }
+}
+
+- (void)updateUIwithNetworkStatus {
+    if ([NetworkMonitor.sharedInstance isInternetReachable]) {
+        self.navigationItem.prompt = nil;
+        [self.view layoutIfNeeded];
+        NSLog (@"YES!");
+    } else {
+        self.navigationItem.prompt = @"Internet is not available";
+        [self.view layoutIfNeeded];
+        NSLog (@"NOT!");
+    }
+}
 
 - (void)internetAppeared:(NSNotification *) note {
-    self.navigationItem.prompt = @"Internet is available";
+    self.navigationItem.prompt = nil;
     [self.view layoutIfNeeded];
     NSLog (@"Successfully received the test notification!");
 }

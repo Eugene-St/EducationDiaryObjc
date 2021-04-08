@@ -21,21 +21,24 @@
     SCNetworkReachabilityFlags flags;
 
     if(reachability == NULL)
+        NSLog(@"Someone broke the internet :(");
         return false;
 
     if (!(SCNetworkReachabilityGetFlags(reachability, &flags)))
+        NSLog(@"Someone broke the internet :(");
         return false;
 
     if ((flags & kSCNetworkReachabilityFlagsReachable) == 0)
         // if target host is not reachable
+        NSLog(@"Someone broke the internet :(");
         return false;
-
 
     BOOL isReachable = false;
 
-
     if ((flags & kSCNetworkReachabilityFlagsConnectionRequired) == 0)
     {
+        NSLog(@"Yayyy, we have the interwebs!");
+        
         // if target host is reachable and no connection is required
         //  then we'll assume (for now) that your on Wi-Fi
         isReachable = true;
@@ -51,6 +54,8 @@
         if ((flags & kSCNetworkReachabilityFlagsInterventionRequired) == 0)
         {
             // ... and no [user] intervention is needed
+            
+            NSLog(@"Yayyy, we have the interwebs!");
             isReachable = true;
         }
     }
@@ -59,16 +64,13 @@
     {
         // ... but WWAN connections are OK if the calling application
         //     is using the CFNetwork (CFSocketStream?) APIs.
+        NSLog(@"Yayyy, we have the interwebs!");
         isReachable = true;
     }
-
-
     return isReachable;
-
-
 }
-
 */
+
 
 + (id)sharedInstance {
     static NetworkMonitor *sharedInstance = nil;
@@ -81,7 +83,7 @@
 
 - (void)internetIsAvailable {
     _internetReachableFoo = [Reachability reachabilityWithHostname:@"www.google.com"];
-
+    
     // Internet is reachable
     _internetReachableFoo.reachableBlock = ^(Reachability*reach)
     {
@@ -89,6 +91,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [NSNotificationCenter.defaultCenter postNotificationName:@"InternetAppeared" object:nil];
             NSLog(@"Yayyy, we have the interwebs!");
+            self.isInternetReachable = true;
         });
     };
 
@@ -99,11 +102,13 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [NSNotificationCenter.defaultCenter postNotificationName:@"InternetDisappeared" object:nil];
             NSLog(@"Someone broke the internet :(");
+            self.isInternetReachable = false;
         });
     };
 
     [_internetReachableFoo startNotifier];
 }
+
 
 /*
 - (BOOL)connected {

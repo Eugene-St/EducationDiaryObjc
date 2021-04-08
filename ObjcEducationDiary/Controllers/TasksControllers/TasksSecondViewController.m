@@ -26,10 +26,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self updateUIwithNetworkStatus];
     _mediator = TasksMediator.new;
     _saveButton.enabled = NO;
     [self loadData];
     [_descriptionTextField becomeFirstResponder];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(internetAppeared:)
+                                                 name:@"InternetAppeared"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(internetDisappeared:)
+                                                 name:@"InternetDisappeared"
+                                               object:nil];
 }
 
 #pragma mark - IBActions
@@ -106,6 +117,30 @@
         _progressSlider.value = 0;
         _progressLabel.text = @"0";
     }
+}
+
+- (void)updateUIwithNetworkStatus {
+    if ([NetworkMonitor.sharedInstance isInternetReachable]) {
+        self.navigationItem.prompt = nil;
+        [self.view layoutIfNeeded];
+        NSLog (@"YES!");
+    } else {
+        self.navigationItem.prompt = @"Internet is not available";
+        [self.view layoutIfNeeded];
+        NSLog (@"NOT!");
+    }
+}
+
+- (void)internetAppeared:(NSNotification *) note {
+    self.navigationItem.prompt = nil;
+    [self.view layoutIfNeeded];
+    NSLog (@"Successfully received the test notification!");
+}
+
+- (void)internetDisappeared:(NSNotification *) note {
+    self.navigationItem.prompt = @"Internet is not available";
+    [self.view layoutIfNeeded];
+    NSLog (@"Successfully received the test notification!");
 }
 
 #pragma mark - UITextFieldDelegate methods

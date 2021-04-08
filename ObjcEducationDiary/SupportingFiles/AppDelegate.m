@@ -17,9 +17,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [CoreDataManager sharedInstance];
-//    [[NetworkMonitor alloc] internetIsAvailable];
-//    [NetworkMonitor.sharedInstance internetIsAvailable];
-//    NSLog(@"%@",[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory  inDomains:NSUserDomainMask] lastObject]);
+    [NetworkMonitor.sharedInstance internetIsAvailable];
     return YES;
 }
 

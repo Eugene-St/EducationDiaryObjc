@@ -16,7 +16,6 @@
     if ((self = [super init])) {
         self.path = @"bookmarks";
         self.modelClass = [Bookmark class];
-        [[NetworkMonitor alloc] internetIsAvailable];
     }
     return self;
 }

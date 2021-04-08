@@ -22,10 +22,6 @@
     return self;
 }
 
-//- (BOOL)networkIsAvailable {
-//    return [NetworkMonitor.sharedInstance connected];
-//}
-
 #pragma mark - Parse JSON
 - (id)parseJSON:(NSData *)data {
     NSError *errr;
@@ -44,18 +40,11 @@
 
 #pragma mark - Fetch data
 - (void)fetchData:(void (^)(id _Nonnull, NSError * _Nonnull))completionBlock {
-    
-    
-    
-    /*
-    if ([NetworkMonitor.sharedInstance isReachable]) {
-        NSLog(@"Connected");
+    if ([NetworkMonitor.sharedInstance isInternetReachable]) {
         [self fetchDataFromNetwork:completionBlock];
     } else {
-        NSLog(@"Not connected");
         [self fetchFromDB:completionBlock];
     }
-     */
 }
 
 #pragma mark - Fetch data from network

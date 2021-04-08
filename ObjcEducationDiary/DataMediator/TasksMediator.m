@@ -18,4 +18,79 @@
     return self;
 }
 
+- (void)saveToDB:(id)objects :(void(^)(NSError*))completionBlock {
+    if ([objects isKindOfClass:[NSMutableArray<Task *> class]]) {
+        for (Task *task in objects) {
+            TaskCoreData *taskCD = [[TaskCoreData alloc] initWithContext:[CoreDataManager.sharedInstance context]];
+            [task mapToCoreData:taskCD];
+        }
+        [CoreDataManager.sharedInstance saveItems:^(NSError * _Nullable error) {
+            completionBlock(error);
+        }];
+    }
+}
+
+- (void)fetchFromDB:(void (^)(id _Nullable, NSError * _Nullable))completionBlock {
+    [CoreDataManager.sharedInstance fetch:@"TaskCoreData" :^(id _Nullable objects, NSError * _Nullable error) {
+        if (error) {
+            completionBlock(nil, error);
+        } else {
+            NSMutableArray<Task *> *tasks = NSMutableArray.new;
+            
+            for (TaskCoreData *taskObject in objects) {
+                [tasks addObject:[[Task alloc] initWithCD:taskObject]];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(tasks, nil);
+            });
+        }
+    }];
+}
+
+- (void)deleteFromDB:(id)object :(void (^)(NSError * _Nonnull))completionBlock {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"TaskCoreData"];
+    request.predicate = [NSPredicate predicateWithFormat:@"sid == %@", [object sid]];
+    
+    NSManagedObjectContext *moc = [CoreDataManager.sharedInstance context];
+    NSError *error = nil;
+    TaskCoreData *taskCD = [moc executeFetchRequest:request error:&error].firstObject;
+    [CoreDataManager.sharedInstance deleteItem:taskCD :^(NSError * _Nullable error) {
+        completionBlock(error);
+    }];
+}
+
+- (void)updateInDB:(id)object :(void (^)(NSError * _Nonnull))completionBlock {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"TaskCoreData"];
+    Task *task;
+    if ([object isKindOfClass:[Task class]]) {
+        task = object;
+        request.predicate = [NSPredicate predicateWithFormat:@"sid == %@", [object sid]];
+    }
+    
+    NSManagedObjectContext *moc = [CoreDataManager.sharedInstance context];
+    NSError *error = nil;
+    TaskCoreData *taskCD = [moc executeFetchRequest:request error:&error].firstObject;
+    [task mapToCoreData:taskCD];
+    [CoreDataManager.sharedInstance saveItems:^(NSError * _Nullable error) {
+        completionBlock(error);
+    }];
+}
+
+- (void)createInDB:(id)object :(void (^)(NSError * _Nonnull))completionBlock {
+    TaskCoreData *taskCD = [[TaskCoreData alloc] initWithContext:[CoreDataManager.sharedInstance context]];
+    
+    if ([object isKindOfClass:[Task class]]) {
+        [object mapToCoreData:taskCD];
+    }
+    [CoreDataManager.sharedInstance saveItems:^(NSError * _Nullable error) {
+        completionBlock(error);
+    }];
+}
+
+- (void)deleteEntitiesFromDB:(void (^)(NSError * _Nonnull))completionBlock {
+    [CoreDataManager.sharedInstance resetAllRecords:@"TaskCoreData" :^(NSError * _Nullable error) {
+        completionBlock(error);
+    }];
+}
+
 @end

@@ -31,6 +31,15 @@
     return self;
 }
 
+- (id)initWithCD:(BookmarkCoreData *)bookmarkCD {
+    self = [super init];
+    if (!self) return nil;
+    _sid = bookmarkCD.sid;
+    _name = bookmarkCD.name;
+    _text = bookmarkCD.text;
+    return self;
+}
+
 - (NSData *)mapJSONToDataWithError:(NSError *__autoreleasing *)error {
     NSMutableDictionary *bookmark = NSMutableDictionary.new;
     
@@ -55,6 +64,12 @@
         *error = [NSError errorWithDomain:@"Failed to serialize model" code:100 userInfo:nil];
     }
     return nil;
+}
+
+- (void)mapToCoreData:(BookmarkCoreData *)bookmarkCD {
+    bookmarkCD.name = _name;
+    bookmarkCD.sid = _sid;
+    bookmarkCD.text = _text;
 }
 
 @end

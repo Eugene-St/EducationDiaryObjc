@@ -7,6 +7,8 @@
 
 #import <Foundation/Foundation.h>
 #import "Mediator.h"
+#import "TaskCoreData+CoreDataClass.h"
+#import "CoreDataManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

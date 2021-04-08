@@ -158,7 +158,7 @@
 #pragma mark - Controller delegate
 - (void)fetchDataFromSecondVC:(Task *)task {
     NSUInteger newIndex = [_taskViewModels indexOfObjectPassingTest:^BOOL(TaskViewModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        return (*stop = ([obj.key isEqualToString:task.sid]));
+        return (*stop = ([obj.task.sid isEqualToString:task.sid]));
     }];
     
     if (newIndex != NSNotFound) {

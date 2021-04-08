@@ -8,6 +8,7 @@
 #import "Mediator.h"
 #import "NetworkManager.h"
 #import "Model.h"
+#import "CoreDataManager.h"
 
 #pragma mark - Implementation
 @implementation Mediator
@@ -20,6 +21,10 @@
     }
     return self;
 }
+
+//- (BOOL)networkIsAvailable {
+//    return [NetworkMonitor.sharedInstance connected];
+//}
 
 #pragma mark - Parse JSON
 - (id)parseJSON:(NSData *)data {
@@ -39,7 +44,18 @@
 
 #pragma mark - Fetch data
 - (void)fetchData:(void (^)(id _Nonnull, NSError * _Nonnull))completionBlock {
-    [self fetchDataFromNetwork:completionBlock];
+    
+    
+    
+    /*
+    if ([NetworkMonitor.sharedInstance isReachable]) {
+        NSLog(@"Connected");
+        [self fetchDataFromNetwork:completionBlock];
+    } else {
+        NSLog(@"Not connected");
+        [self fetchFromDB:completionBlock];
+    }
+     */
 }
 
 #pragma mark - Fetch data from network
@@ -56,15 +72,25 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             completionBlock(nil, error);
         });
-        return;
-    }
-    
-    if (data) {
+        
+    } else {
         NSData *decodedData;
         
         if ((decodedData = [self parseJSON:data])) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionBlock(decodedData, nil);
+            });
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self deleteEntitiesFromDB:^(NSError * _Nonnull error) {
+                    completionBlock(nil, error);
+                }];
+            });
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self saveToDB:decodedData :^(NSError * _Nonnull error) {
+                    completionBlock(nil, error);
+                }];
             });
             
         } else {
@@ -83,13 +109,17 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionBlock(nil, error);
             });
-            return;
-        }
-        
-        if (object) {
+            
+        } else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionBlock(object, nil);
             });
+            
+            [self deleteFromDB:model :^(NSError * _Nonnull error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionBlock(nil, error);
+                });
+            }];
         }
     }];
 }
@@ -102,6 +132,7 @@
     if (dataError) {
         dispatch_async(dispatch_get_main_queue(), ^{
             completionBlock(nil, dataError);
+            return;
         });
     }
     
@@ -115,6 +146,12 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionBlock(response, nil);
             });
+            
+            [self createInDB:model :^(NSError * _Nonnull error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionBlock(nil, error);
+                });
+            }];
         }
     }];
 }
@@ -134,14 +171,29 @@
         if (error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionBlock(nil, error);
+                return;
             });
+            
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionBlock(response, nil);
             });
+            
+            [self updateInDB:model :^(NSError * _Nonnull error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionBlock(nil, error);
+                });
+            }];
         }
     }];
 }
+
+- (void)saveToDB:(id)objects :(void(^)(NSError*))completionBlock {}
+- (void)createInDB:(id)object :(void (^)(NSError * _Nonnull))completionBlock {}
+- (void)updateInDB:(id)object :(void (^)(NSError * _Nonnull))completionBlock {}
+- (void)fetchFromDB:(void (^)(id _Nonnull, NSError * _Nonnull))completionBlock {}
+- (void)deleteFromDB:(id)object :(void (^)(NSError * _Nonnull))completionBlock {}
+- (void)deleteEntitiesFromDB:(void (^)(NSError * _Nonnull))completionBlock {}
 
 @end
 

@@ -31,6 +31,31 @@
     [self.tableView addGestureRecognizer:longGestureRecognizer];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+[super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(internetAppeared:)
+                                                 name:@"InternetAppeared"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(internetDisappeared:)
+                                                 name:@"InternetDisappeared"
+                                               object:nil];
+ }
+
+- (void)internetAppeared:(NSNotification *) note {
+    self.navigationItem.prompt = @"Internet is available";
+    [self.view layoutIfNeeded];
+    NSLog (@"Successfully received the test notification!");
+}
+
+- (void)internetDisappeared:(NSNotification *) note {
+    self.navigationItem.prompt = @"Internet is not available";
+    [self.view layoutIfNeeded];
+    NSLog (@"Successfully received the test notification!");
+}
+
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.bookmarks.count;

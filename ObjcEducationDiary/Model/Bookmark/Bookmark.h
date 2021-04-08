@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Model.h"
+#import "BookmarkCoreData+CoreDataClass.h"
 
 //@class Bookmark;
 
@@ -17,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *text;
 @property (nonatomic, strong) NSString *sid;
+
+- (void)mapToCoreData:(BookmarkCoreData *)bookmarkCD;
+- (id)initWithCD:(BookmarkCoreData *)bookmarkCD;
 
 @end
 

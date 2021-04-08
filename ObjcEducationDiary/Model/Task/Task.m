@@ -36,6 +36,16 @@
     return self;
 }
 
+- (id)initWithCD:(TaskCoreData *)taskCD {
+    self = [super init];
+    if (!self) return nil;
+    _sid = taskCD.sid;
+    _progress = [NSNumber numberWithInt:taskCD.progress];
+    _taskDescription = taskCD.taskDescription;
+    _createdOn = [NSNumber numberWithInt:taskCD.createdOn];
+    return self;
+}
+
 - (NSData *)mapJSONToDataWithError:(NSError *__autoreleasing *)error {
     NSMutableDictionary *task = NSMutableDictionary.new;
     
@@ -64,6 +74,13 @@
         *error = [NSError errorWithDomain:@"Failed to serialize model" code:100 userInfo:nil];
     }
     return nil;
+}
+
+- (void)mapToCoreData:(TaskCoreData *)taskCD {
+    taskCD.createdOn = [_createdOn intValue];
+    taskCD.progress = [_progress intValue];
+    taskCD.sid = _sid;
+    taskCD.taskDescription = _taskDescription;
 }
 
 @end

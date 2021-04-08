@@ -7,13 +7,13 @@
 
 #import "NetworkManager.h"
 
-typedef void(^myCompletion)(NSData * _Nullable, NSError * _Nullable);
+typedef void(^networkCompletion)(NSData * _Nullable, NSError * _Nullable);
 NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.com/";
 
 @implementation NetworkManager
 
 #pragma mark - GET request
-+ (void) getRequest:(NSString *)path :(myCompletion)completionBlock {
++ (void) getRequest:(NSString *)path :(networkCompletion)completionBlock {
     NSURL *url = [[[NSURL URLWithString:hostURLPath]
                    URLByAppendingPathComponent:path]
                   URLByAppendingPathExtension:@"json"];
@@ -62,16 +62,16 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
     [urlRequest setValue:@"application/json" forHTTPHeaderField:@"content-type"];
     
     [[NSURLSession.sharedSession dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
         if (error) {
             completionBlock(nil, error);
+        } else {
+            completionBlock(response, nil);
         }
-        completionBlock(response, nil);
-        
     }]resume];
 }
 
 #pragma mark - PATCH request
-
 + (void)patchRequest:(NSString *)path :(NSString *)identificator :(NSData *)data :(completion)completionBlock {
     NSURL *url;
     
@@ -83,7 +83,10 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
                URLByAppendingPathExtension:@"json"];
         
     } else {
-        completionBlock(nil, [NSError errorWithDomain:@"Host url is invalid" code:0 userInfo:nil]);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionBlock(nil, [NSError errorWithDomain:@"Host url is invalid" code:0 userInfo:nil]);
+        });
+        return;
     }
     
     NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
@@ -94,8 +97,9 @@ NSString *const hostURLPath = @"https://testapp-3135f-default-rtdb.firebaseio.co
     [[NSURLSession.sharedSession dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
             completionBlock(nil, error);
+        } else {
+            completionBlock(response, nil);
         }
-        completionBlock(response, nil);
     }]resume];
 }
 

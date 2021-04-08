@@ -5,8 +5,9 @@
 //  Created by Eugene St on 26.03.2021.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "Model.h"
+#import "NetworkMonitor.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,6 +20,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)createNewData:(id<Model>)model :(void(^)(id, NSError*))completionBlock;
 - (void)updateData:(id<Model>)model :(void(^)(id, NSError*))completionBlock;
 - (instancetype)initWithPath:(NSString*)path modelCLass:(Class)modelCLass;
+
+- (void)saveToDB:(id)objects :(void(^)(NSError*))completionBlock;
+- (void)createInDB:(id)object :(void(^)(NSError*))completionBlock;
+- (void)updateInDB:(id)object :(void(^)(NSError*))completionBlock;
+- (void)fetchFromDB :(void(^)(id, NSError*))completionBlock;
+- (void)deleteFromDB:(id)object :(void(^)(NSError*))completionBlock;
+- (void)deleteEntitiesFromDB:(void(^)(NSError*))completionBlock;
+
+//- (BOOL)networkIsAvailable;
 
 @end
 

@@ -12,8 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BookmarksMediator : Mediator
 
-- (instancetype)init;
-
 @end
 
 NS_ASSUME_NONNULL_END

@@ -12,9 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TasksViewController : UITableViewController <UIPopoverPresentationControllerDelegate, TaskViewControllerDelegate>
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *addButton;
-- (IBAction)addButtonPressed:(UIBarButtonItem *)sender;
-
 @end
 
 NS_ASSUME_NONNULL_END

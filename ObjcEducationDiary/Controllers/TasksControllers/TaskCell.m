@@ -27,14 +27,14 @@
         taskViewModel.color = [UIColor colorWithRed:70.0/255.0 green:124.0/255.0 blue:36.0/255.0 alpha:1];
         self.accessoryType = UITableViewCellAccessoryCheckmark;
         self.tintColor = [UIColor colorWithRed:70.0/255.0 green:124.0/255.0 blue:36.0/255.0 alpha:1];
-        
-    } else if (taskViewModel.task.progress == nil) {
+    }
+    else if (taskViewModel.task.progress == nil) {
         _progressView.backgroundColor = nil;
         NSMutableAttributedString *regularString = [[NSMutableAttributedString alloc] initWithString:taskViewModel.task.taskDescription];
         [regularString addAttribute: UIAccessibilityTextAttributeCustom value:[NSNumber numberWithInteger: NSUnderlineStyleSingle] range: NSMakeRange(0, [regularString length])];
         self.textLabel.attributedText = regularString;
-        
-    } else {
+    }
+    else {
         _progressView.backgroundColor = [UIColor colorWithRed:70.0/255.0 green:124.0/255.0 blue:36.0/255.0 alpha:1];
         NSMutableAttributedString *regularString = [[NSMutableAttributedString alloc] initWithString:taskViewModel.task.taskDescription];
         [regularString addAttribute: UIAccessibilityTextAttributeCustom value:[NSNumber numberWithInteger: NSUnderlineStyleSingle] range: NSMakeRange(0, [regularString length])];
@@ -59,7 +59,6 @@
     [self.progressView setFrame:newFrame];
     _progressWidth = [_progressView.widthAnchor constraintEqualToConstant:initialWidth];
     _progressWidth.active = YES;
-    
     [NSLayoutConstraint activateConstraints:@[
         [_progressView.heightAnchor constraintEqualToAnchor:self.contentView.heightAnchor],
         [_progressView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],

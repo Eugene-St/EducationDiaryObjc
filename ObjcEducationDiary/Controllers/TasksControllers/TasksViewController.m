@@ -19,6 +19,7 @@
 @property (strong, nonatomic) NSMutableArray<Task *> *tasks;
 @property (strong, nonatomic) NSMutableArray<TaskViewModel *> *taskViewModels;
 @property (strong, nonatomic) TasksMediator *mediator;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *addButton;
 
 @end
 
@@ -34,12 +35,21 @@
     _mediator = TasksMediator.new;
     self.taskViewModels = NSMutableArray.new;
     [self loadData];
-    
     UILongPressGestureRecognizer *longGestureRecognizer = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressed:)];
     [self.tableView addGestureRecognizer:longGestureRecognizer];
     refreshControl = [[UIRefreshControl alloc]init];
     [refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:refreshControl];
+    [self updateUIwithNetworkStatus];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(internetAppeared:)
+                                                 name:@"InternetAppeared"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(internetDisappeared:)
+                                                 name:@"InternetDisappeared"
+                                               object:nil];
 }
 
 #pragma mark - Table view data source
@@ -59,12 +69,11 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         TaskViewModel *model = _taskViewModels[indexPath.row];
         __weak typeof(self) weakSelf = self;
-        
         [_mediator deleteData:model.task :^(id _Nonnull result, NSError * _Nonnull error) {
             if (error) {
                 [Alert errorAlert:error];
-            
-            } else {
+            }
+            else {
                 [weakSelf.taskViewModels removeObjectAtIndex:indexPath.row];
                 [weakSelf.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
             }
@@ -86,12 +95,11 @@
 #pragma mark - Load data
 - (void)loadData {
     __weak typeof(self) weakSelf = self;
-    
     [_mediator fetchData:^(id  _Nonnull tasks, NSError * _Nonnull error) {
         if (error) {
             [Alert errorAlert:error];
-        
-        } else {
+        }
+        else {
             for (Task *task in tasks) {
                 TaskViewModel *model = [[TaskViewModel alloc]initWithTask:task];
                 [weakSelf.taskViewModels addObject:model];
@@ -113,22 +121,43 @@
     if (sender.state == UIGestureRecognizerStateBegan) {
         CGPoint touchPoint = [sender locationInView:self.tableView];
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:touchPoint];
-        
         if (indexPath) {
             TaskViewModel *taskModel = _taskViewModels[indexPath.row];
             taskModel.task.progress = @100;
             __weak typeof(self) weakSelf = self;
-            
             [_mediator updateData:taskModel.task :^(id _Nonnull response, NSError * _Nonnull error) {
                 if (error) {
                     [Alert errorAlert:error];
-                
-                } else {
+                }
+                else {
                     [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                 }
             }];
         }
     }
+}
+
+- (void)updateUIwithNetworkStatus {
+    if ([NetworkMonitor.sharedInstance isInternetReachable]) {
+        self.navigationItem.prompt = nil;
+        [self.view layoutIfNeeded];
+    }
+    else {
+        self.navigationItem.prompt = @"Internet is not available";
+        _addButton.enabled = NO;
+        [self.view layoutIfNeeded];
+    }
+}
+
+- (void)internetAppeared:(NSNotification *)note {
+    self.navigationItem.prompt = nil;
+    [self.view layoutIfNeeded];
+}
+
+- (void)internetDisappeared:(NSNotification *) note {
+    self.navigationItem.prompt = @"Internet is not available";
+    _addButton.enabled = NO;
+    [self.view layoutIfNeeded];
 }
 
 #pragma mark - PopoverVC presentation
@@ -139,13 +168,12 @@
     UIPopoverPresentationController *popController = [taskSecondVC popoverPresentationController];
     taskSecondVC.delegate = self;
     popController.delegate = self;
-    
     if (indexPath) {
         popController.sourceView = [self.tableView cellForRowAtIndexPath:indexPath];
         taskSecondVC.task = task;
         [self presentViewController:taskSecondVC animated:YES completion:nil];
-    
-    } else {
+    }
+    else {
         popController.barButtonItem = self.addButton;
         [self presentViewController:taskSecondVC animated:YES completion:nil];
     }
@@ -160,12 +188,11 @@
     NSUInteger newIndex = [_taskViewModels indexOfObjectPassingTest:^BOOL(TaskViewModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         return (*stop = ([obj.task.sid isEqualToString:task.sid]));
     }];
-    
     if (newIndex != NSNotFound) {
         _taskViewModels[newIndex].task = task;
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:newIndex inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-    
-    } else {
+    }
+    else {
         TaskViewModel *newTaskModel = [[TaskViewModel alloc]initWithTask:task];
         [_taskViewModels insertObject:newTaskModel atIndex:0];
         [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];

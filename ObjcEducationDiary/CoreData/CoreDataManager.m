@@ -53,7 +53,7 @@
     }
 }
 
-- (void)deleteItem:(id)item :(void (^)(NSError * _Nullable))completion {
+- (void)deleteItem:(id)item completion:(errorCompletionBlock)completion {
     [_context deleteObject:item];
     NSError *error;
     if (![self.context save:&error]) {
@@ -61,7 +61,7 @@
     }
 }
 
-- (void)saveItems:(void (^)(NSError * _Nullable))completion {
+- (void)saveItems:(errorCompletionBlock)completion {
     if (_context.hasChanges) {
         NSError *error;
         if (![self.context save:&error]) {
@@ -70,7 +70,7 @@
     }
 }
 
-- (void)fetch:(NSString *)entity :(void (^)(id _Nullable, NSError * _Nullable))completion {
+- (void)fetch:(NSString *)entity completion:(completion)completion {
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:entity inManagedObjectContext:_context];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     request.entity = entityDescription;
@@ -83,7 +83,7 @@
     }
 }
 
-- (void)resetAllRecords:(NSString *)entity :(void (^)(NSError * _Nullable))completion {
+- (void)resetAllRecords:(NSString *)entity completion:(errorCompletionBlock)completion {
     NSFetchRequest<NSFetchRequestResult> *deleteFetch = [NSFetchRequest<NSFetchRequestResult> fetchRequestWithEntityName:entity];
     NSBatchDeleteRequest *deleteRequest = [[NSBatchDeleteRequest alloc] initWithFetchRequest:deleteFetch];
     NSError *error;

@@ -11,17 +11,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^completion)(id _Nullable, NSError * _Nullable);
+typedef void(^errorCompletionBlock)(NSError * _Nullable);
+
 @interface CoreDataManager : NSObject
 
-@property (nonatomic, strong) NSPersistentContainer *persistentContainer;
+@property (strong, nonatomic) NSPersistentContainer *persistentContainer;
 @property (strong, nonatomic) NSManagedObjectContext *context;
 
 + (id)sharedInstance;
 - (void)saveContext;
-- (void)deleteItem:(id)item :(void(^)(NSError * _Nullable))completion;
-- (void)saveItems:(void(^)(NSError * _Nullable))completion;
-- (void)resetAllRecords:(NSString *)entity :(void(^)(NSError * _Nullable))completion;
-- (void)fetch:(NSString*)entity :(void(^)(id _Nullable, NSError * _Nullable))completion;
+- (void)deleteItem:(id)item completion:(errorCompletionBlock)completion;
+- (void)saveItems:(errorCompletionBlock)completion;
+- (void)resetAllRecords:(NSString *)entity completion:(errorCompletionBlock)completion;
+- (void)fetch:(NSString*)entity completion:(completion)completion;
 
 @end
 

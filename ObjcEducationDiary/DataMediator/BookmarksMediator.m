@@ -13,14 +13,11 @@
 @implementation BookmarksMediator
 
 - (instancetype)init {
-    if ((self = [super init])) {
-        self.path = @"bookmarks";
-        self.modelClass = [Bookmark class];
-    }
+    self = [super initWithPath:@"bookmarks" modelCLass:[Bookmark class]];
     return self;
 }
 
-- (void)saveToDB:(id)objects :(void(^)(NSError*))completionBlock {
+- (void)saveToDB:(id)objects :(errorCompletionBlock)completionBlock {
     if ([objects isKindOfClass:[NSMutableArray<Bookmark *> class]]) {
         for (Bookmark *bookmark in objects) {
             BookmarkCoreData *bookmarkCD = [[BookmarkCoreData alloc] initWithContext:[CoreDataManager.sharedInstance context]];
@@ -32,14 +29,13 @@
     }
 }
 
-- (void)fetchFromDB:(void (^)(id _Nullable, NSError * _Nullable))completionBlock {
-    NSLog(@"fetched from DB");
-    [CoreDataManager.sharedInstance fetch:@"BookmarkCoreData" :^(id _Nullable objects, NSError * _Nullable error) {
+- (void)fetchFromDB:(completion)completionBlock {
+    [CoreDataManager.sharedInstance fetch:@"BookmarkCoreData" completion:^(id _Nullable objects, NSError * _Nullable error) {
         if (error) {
             completionBlock(nil, error);
-        } else {
+        }
+        else {
             NSMutableArray<Bookmark *> *bookmarks = NSMutableArray.new;
-            
             for (BookmarkCoreData *bookmarkObject in objects) {
                 [bookmarks addObject:[[Bookmark alloc] initWithCD:bookmarkObject]];
             }
@@ -50,26 +46,24 @@
     }];
 }
 
-- (void)deleteFromDB:(id)object :(void (^)(NSError * _Nonnull))completionBlock {
+- (void)deleteFromDB:(id)object :(errorCompletionBlock)completionBlock {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"BookmarkCoreData"];
     request.predicate = [NSPredicate predicateWithFormat:@"sid == %@", [object sid]];
-    
     NSManagedObjectContext *moc = [CoreDataManager.sharedInstance context];
     NSError *error = nil;
     BookmarkCoreData *bookmarkCD = [moc executeFetchRequest:request error:&error].firstObject;
-    [CoreDataManager.sharedInstance deleteItem:bookmarkCD :^(NSError * _Nullable error) {
+    [CoreDataManager.sharedInstance deleteItem:bookmarkCD completion:^(NSError * _Nullable error) {
         completionBlock(error);
     }];
 }
 
-- (void)updateInDB:(id)object :(void (^)(NSError * _Nonnull))completionBlock {
+- (void)updateInDB:(id)object :(errorCompletionBlock)completionBlock {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"BookmarkCoreData"];
     Bookmark *bookmark;
     if ([object isKindOfClass:[Bookmark class]]) {
         bookmark = object;
         request.predicate = [NSPredicate predicateWithFormat:@"sid == %@", [object sid]];
     }
-    
     NSManagedObjectContext *moc = [CoreDataManager.sharedInstance context];
     NSError *error = nil;
     BookmarkCoreData *bookmarkCD = [moc executeFetchRequest:request error:&error].firstObject;
@@ -79,9 +73,8 @@
     }];
 }
 
-- (void)createInDB:(id)object :(void (^)(NSError * _Nonnull))completionBlock {
+- (void)createInDB:(id)object :(errorCompletionBlock)completionBlock {
     BookmarkCoreData *bookmarkCD = [[BookmarkCoreData alloc] initWithContext:[CoreDataManager.sharedInstance context]];
-    
     if ([object isKindOfClass:[Bookmark class]]) {
         [object mapToCoreData:bookmarkCD];
     }
@@ -90,8 +83,8 @@
     }];
 }
 
-- (void)deleteEntitiesFromDB:(void (^)(NSError * _Nonnull))completionBlock {
-    [CoreDataManager.sharedInstance resetAllRecords:@"BookmarkCoreData" :^(NSError * _Nullable error) {
+- (void)deleteEntitiesFromDB:(errorCompletionBlock)completionBlock {
+    [CoreDataManager.sharedInstance resetAllRecords:@"BookmarkCoreData" completion:^(NSError * _Nullable error) {
         completionBlock(error);
     }];
 }

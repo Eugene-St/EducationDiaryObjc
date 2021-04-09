@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) NSLayoutConstraint *progressWidth;
 @property (weak, nonatomic) IBOutlet UIView *progressView;
+
 - (void)configure:(TaskViewModel *)taskViewModel;
 
 @end

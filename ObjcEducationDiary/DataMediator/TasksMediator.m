@@ -11,14 +11,11 @@
 @implementation TasksMediator
 
 - (instancetype)init {
-    if ((self = [super init])) {
-        self.path = @"tasks";
-        self.modelClass = [Task class];
-    }
+    self = [super initWithPath:@"tasks" modelCLass:[Task class]];
     return self;
 }
 
-- (void)saveToDB:(id)objects :(void(^)(NSError*))completionBlock {
+- (void)saveToDB:(id)objects :(errorCompletionBlock)completionBlock {
     if ([objects isKindOfClass:[NSMutableArray<Task *> class]]) {
         for (Task *task in objects) {
             TaskCoreData *taskCD = [[TaskCoreData alloc] initWithContext:[CoreDataManager.sharedInstance context]];
@@ -30,13 +27,13 @@
     }
 }
 
-- (void)fetchFromDB:(void (^)(id _Nullable, NSError * _Nullable))completionBlock {
-    [CoreDataManager.sharedInstance fetch:@"TaskCoreData" :^(id _Nullable objects, NSError * _Nullable error) {
+- (void)fetchFromDB:(completion)completionBlock {
+    [CoreDataManager.sharedInstance fetch:@"TaskCoreData" completion:^(id _Nullable objects, NSError * _Nullable error) {
         if (error) {
             completionBlock(nil, error);
-        } else {
+        }
+        else {
             NSMutableArray<Task *> *tasks = NSMutableArray.new;
-            
             for (TaskCoreData *taskObject in objects) {
                 [tasks addObject:[[Task alloc] initWithCD:taskObject]];
             }
@@ -47,26 +44,24 @@
     }];
 }
 
-- (void)deleteFromDB:(id)object :(void (^)(NSError * _Nonnull))completionBlock {
+- (void)deleteFromDB:(id)object :(errorCompletionBlock)completionBlock {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"TaskCoreData"];
     request.predicate = [NSPredicate predicateWithFormat:@"sid == %@", [object sid]];
-    
     NSManagedObjectContext *moc = [CoreDataManager.sharedInstance context];
     NSError *error = nil;
     TaskCoreData *taskCD = [moc executeFetchRequest:request error:&error].firstObject;
-    [CoreDataManager.sharedInstance deleteItem:taskCD :^(NSError * _Nullable error) {
+    [CoreDataManager.sharedInstance deleteItem:taskCD completion:^(NSError * _Nullable error) {
         completionBlock(error);
     }];
 }
 
-- (void)updateInDB:(id)object :(void (^)(NSError * _Nonnull))completionBlock {
+- (void)updateInDB:(id)object :(errorCompletionBlock)completionBlock {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"TaskCoreData"];
     Task *task;
     if ([object isKindOfClass:[Task class]]) {
         task = object;
         request.predicate = [NSPredicate predicateWithFormat:@"sid == %@", [object sid]];
     }
-    
     NSManagedObjectContext *moc = [CoreDataManager.sharedInstance context];
     NSError *error = nil;
     TaskCoreData *taskCD = [moc executeFetchRequest:request error:&error].firstObject;
@@ -76,9 +71,8 @@
     }];
 }
 
-- (void)createInDB:(id)object :(void (^)(NSError * _Nonnull))completionBlock {
+- (void)createInDB:(id)object :(errorCompletionBlock)completionBlock {
     TaskCoreData *taskCD = [[TaskCoreData alloc] initWithContext:[CoreDataManager.sharedInstance context]];
-    
     if ([object isKindOfClass:[Task class]]) {
         [object mapToCoreData:taskCD];
     }
@@ -87,8 +81,8 @@
     }];
 }
 
-- (void)deleteEntitiesFromDB:(void (^)(NSError * _Nonnull))completionBlock {
-    [CoreDataManager.sharedInstance resetAllRecords:@"TaskCoreData" :^(NSError * _Nullable error) {
+- (void)deleteEntitiesFromDB:(errorCompletionBlock)completionBlock {
+    [CoreDataManager.sharedInstance resetAllRecords:@"TaskCoreData" completion:^(NSError * _Nullable error) {
         completionBlock(error);
     }];
 }

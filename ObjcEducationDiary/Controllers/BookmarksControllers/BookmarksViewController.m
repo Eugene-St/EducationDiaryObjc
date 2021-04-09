@@ -29,42 +29,16 @@
     [self loadData];
     UILongPressGestureRecognizer *longGestureRecognizer = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressed:)];
     [self.tableView addGestureRecognizer:longGestureRecognizer];
-    
     [self updateUIwithNetworkStatus];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(internetAppeared:)
                                                  name:@"InternetAppeared"
                                                object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(internetDisappeared:)
                                                  name:@"InternetDisappeared"
                                                object:nil];
-}
-
-- (void)updateUIwithNetworkStatus {
-    if ([NetworkMonitor.sharedInstance isInternetReachable]) {
-        self.navigationItem.prompt = nil;
-        [self.view layoutIfNeeded];
-        NSLog (@"YES!");
-    } else {
-        self.navigationItem.prompt = @"Internet is not available";
-        [self.view layoutIfNeeded];
-        NSLog (@"NOT!");
-    }
-}
-
-- (void)internetAppeared:(NSNotification *) note {
-    self.navigationItem.prompt = nil;
-    [self.view layoutIfNeeded];
-    NSLog (@"Successfully received the test notification!");
-}
-
-- (void)internetDisappeared:(NSNotification *) note {
-    self.navigationItem.prompt = @"Internet is not available";
-    [self.view layoutIfNeeded];
-    NSLog (@"Successfully received the test notification!");
 }
 
 #pragma mark - Table view data source
@@ -85,12 +59,11 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         Bookmark* bookmark = _bookmarks[indexPath.row];
         __weak typeof(self) weakSelf = self;
-        
         [_mediator deleteData:bookmark :^(id _Nonnull result, NSError * _Nonnull error) {
             if (error) {
                 [Alert errorAlert:error];
-            
-            } else {
+            }
+            else {
                 [weakSelf.bookmarks removeObjectAtIndex:indexPath.row];
                 [weakSelf.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             }
@@ -114,8 +87,8 @@
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if (bookmark) {
             [self updateBookmark:bookmark :ac];
-        
-        } else {
+        }
+        else {
             [self createNewBookmark:ac];
         }
     }];
@@ -125,7 +98,6 @@
         nameTextField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
         nameTextField.placeholder = @"name - optional";
         nameTextField.text = bookmark.name;
-        
         if (bookmark) {
             [NSNotificationCenter.defaultCenter addObserverForName:UITextFieldTextDidChangeNotification object:nameTextField queue:NSOperationQueue.mainQueue usingBlock:^(NSNotification * _Nonnull note) {
                 NSUInteger textCount = [[nameTextField.text stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet]length];
@@ -140,7 +112,6 @@
         textTextField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
         textTextField.placeholder = @"text - required";
         textTextField.text = bookmark.text;
-        
         [NSNotificationCenter.defaultCenter addObserverForName:UITextFieldTextDidChangeNotification object:textTextField queue:NSOperationQueue.mainQueue usingBlock:^(NSNotification * _Nonnull note) {
             NSUInteger textCount = [[textTextField.text stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet]length];
             BOOL textIsNotEmpty = textCount > 0;
@@ -175,12 +146,11 @@
     NSNumber *timeStamp = [NSNumber numberWithInt:NSDate.timeIntervalSinceReferenceDate];
     bookmark.sid = [NSString stringWithFormat: @"%@", timeStamp];
     __weak typeof(self) weakSelf = self;
-    
     [_mediator createNewData:bookmark :^(id _Nonnull response, NSError * _Nonnull error) {
         if (error) {
             [Alert errorAlert:error];
-        
-        } else {
+        }
+        else {
             [weakSelf.bookmarks insertObject:bookmark atIndex:0];
             [weakSelf.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
         }
@@ -194,12 +164,11 @@
     newBookmark.text = ac.textFields.lastObject.text;
     newBookmark.sid = bookmark.sid;
     __weak typeof(self) weakSelf = self;
-    
     [_mediator updateData:newBookmark :^(id _Nonnull response, NSError * _Nonnull error) {
         if (error) {
             [Alert errorAlert:error];
-        
-        } else {
+        }
+        else {
             NSUInteger newIndex = [weakSelf.bookmarks indexOfObject:bookmark];
             weakSelf.bookmarks[newIndex] = newBookmark;
             [weakSelf.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:newIndex inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
@@ -210,16 +179,36 @@
 #pragma mark - Load data
 - (void)loadData {
     __weak typeof(self) weakSelf = self;
-    
     [_mediator fetchData:^(id  _Nonnull bookmarks, NSError * _Nonnull error) {
         if (error) {
             [Alert errorAlert:error];
-        
-        } else {
+        }
+        else {
             weakSelf.bookmarks = bookmarks;
             [weakSelf.tableView reloadData];
         }
     }];
+}
+
+- (void)updateUIwithNetworkStatus {
+    if ([NetworkMonitor.sharedInstance isInternetReachable]) {
+        self.navigationItem.prompt = nil;
+        [self.view layoutIfNeeded];
+    }
+    else {
+        self.navigationItem.prompt = @"Internet is not available";
+        [self.view layoutIfNeeded];
+    }
+}
+
+- (void)internetAppeared:(NSNotification *) note {
+    self.navigationItem.prompt = nil;
+    [self.view layoutIfNeeded];
+}
+
+- (void)internetDisappeared:(NSNotification *) note {
+    self.navigationItem.prompt = @"Internet is not available";
+    [self.view layoutIfNeeded];
 }
 
 #pragma mark - UITextFieldDelegate methods

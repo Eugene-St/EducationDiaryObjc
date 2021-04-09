@@ -82,7 +82,7 @@
                             <outlet property="delegate" destination="2sX-9E-qn0" id="8gN-tM-AMJ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Topics" prompt="ooo" id="Ld3-f3-0Oz">
+                    <navigationItem key="navigationItem" title="Topics" id="Ld3-f3-0Oz">
                         <barButtonItem key="leftBarButtonItem" title="Sort by:" id="Ava-za-4Ph">
                             <color key="tintColor" red="0.80648976559999996" green="0.7222248912" blue="0.56821578740000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>

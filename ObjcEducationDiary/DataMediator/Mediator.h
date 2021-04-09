@@ -11,24 +11,25 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^completion)(id _Nullable, NSError * _Nullable);
+typedef void(^errorCompletionBlock)(NSError * _Nullable);
+
 @interface Mediator : NSObject
 
 @property (strong, nonatomic) NSString *path;
 @property (assign, nonatomic) Class modelClass;
-- (void)fetchData:(void(^)(id object, NSError *err))completionBlock;
-- (void)deleteData:(id<Model>)model :(void(^)(id, NSError*))completionBlock;
-- (void)createNewData:(id<Model>)model :(void(^)(id, NSError*))completionBlock;
-- (void)updateData:(id<Model>)model :(void(^)(id, NSError*))completionBlock;
+
 - (instancetype)initWithPath:(NSString*)path modelCLass:(Class)modelCLass;
-
-- (void)saveToDB:(id)objects :(void(^)(NSError*))completionBlock;
-- (void)createInDB:(id)object :(void(^)(NSError*))completionBlock;
-- (void)updateInDB:(id)object :(void(^)(NSError*))completionBlock;
-- (void)fetchFromDB :(void(^)(id, NSError*))completionBlock;
-- (void)deleteFromDB:(id)object :(void(^)(NSError*))completionBlock;
-- (void)deleteEntitiesFromDB:(void(^)(NSError*))completionBlock;
-
-//- (BOOL)networkIsAvailable;
+- (void)fetchData:(completion)completionBlock;
+- (void)deleteData:(id<Model>)model :(completion)completionBlock;
+- (void)createNewData:(id<Model>)model :(completion)completionBlock;
+- (void)updateData:(id<Model>)model :(completion)completionBlock;
+- (void)saveToDB:(id)objects :(errorCompletionBlock)completionBlock;
+- (void)createInDB:(id)object :(errorCompletionBlock)completionBlock;
+- (void)updateInDB:(id)object :(errorCompletionBlock)completionBlock;
+- (void)fetchFromDB :(completion)completionBlock;
+- (void)deleteFromDB:(id)object :(errorCompletionBlock)completionBlock;
+- (void)deleteEntitiesFromDB:(errorCompletionBlock)completionBlock;
 
 @end
 

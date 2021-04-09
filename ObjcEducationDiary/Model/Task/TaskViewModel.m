@@ -12,11 +12,11 @@
 @implementation TaskViewModel
 
 - (id)initWithTask:(Task*)task {
-    
     self = [super init];
     if (self) {
         self.task = task;
     }
+    
     return self;
 }
 

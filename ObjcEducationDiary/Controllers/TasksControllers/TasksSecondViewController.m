@@ -16,6 +16,10 @@
 
 #pragma mark - Properties
 @property (strong, nonatomic) TasksMediator *mediator;
+@property (weak, nonatomic) IBOutlet UIButton *saveButton;
+@property (weak, nonatomic) IBOutlet UITextField *descriptionTextField;
+@property (weak, nonatomic) IBOutlet UILabel *progressLabel;
+@property (weak, nonatomic) IBOutlet UISlider *progressSlider;
 
 @end
 
@@ -26,28 +30,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self updateUIwithNetworkStatus];
     _mediator = TasksMediator.new;
     _saveButton.enabled = NO;
     [self loadData];
     [_descriptionTextField becomeFirstResponder];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(internetAppeared:)
-                                                 name:@"InternetAppeared"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(internetDisappeared:)
-                                                 name:@"InternetDisappeared"
-                                               object:nil];
 }
 
 #pragma mark - IBActions
 - (IBAction)progressSliderPressed:(UISlider *)sender {
     _progressSlider.value = sender.value;
     _progressLabel.text = [@(ceil(sender.value)) stringValue];
-    
     if ((_task) && (_descriptionTextField.text.length > 0)) {
         _saveButton.enabled = YES;
     }
@@ -56,8 +48,8 @@
 - (IBAction)saveButtonPressed:(UIButton *)sender {
     if (!_task) {
         [self createNewTask];
-    
-    } else {
+    }
+    else {
         [self updateTask];
     }
 }
@@ -72,13 +64,12 @@
     task.sid = [NSString stringWithFormat: @"%@", timeStamp];
     task.taskDescription = _descriptionTextField.text;
     __weak typeof(self) weakSelf = self;
-    
     [_mediator createNewData:task :^(id _Nonnull response, NSError * _Nonnull error) {
         if (error) {
             [Alert errorAlert:error];
             [weakSelf dismissViewControllerAnimated:YES completion:nil];
-        
-        } else {
+        }
+        else {
             [weakSelf.delegate fetchDataFromSecondVC:task];
             [weakSelf dismissViewControllerAnimated:YES completion:nil];
         }
@@ -93,13 +84,12 @@
     task.sid = _task.sid;
     task.progress = @(ceil(_progressSlider.value));
     __weak typeof(self) weakSelf = self;
-    
     [_mediator createNewData:task :^(id _Nonnull response, NSError * _Nonnull error) {
         if (error) {
             [Alert errorAlert:error];
             [weakSelf dismissViewControllerAnimated:YES completion:nil];
-        
-        } else {
+        }
+        else {
             [weakSelf.delegate fetchDataFromSecondVC:task];
             [weakSelf dismissViewControllerAnimated:YES completion:nil];
         }
@@ -112,35 +102,11 @@
         _descriptionTextField.text = _task.taskDescription;
         _progressSlider.value = [_task.progress floatValue];
         _progressLabel.text = [_task.progress stringValue];
-    
-    } else {
+    }
+    else {
         _progressSlider.value = 0;
         _progressLabel.text = @"0";
     }
-}
-
-- (void)updateUIwithNetworkStatus {
-    if ([NetworkMonitor.sharedInstance isInternetReachable]) {
-        self.navigationItem.prompt = nil;
-        [self.view layoutIfNeeded];
-        NSLog (@"YES!");
-    } else {
-        self.navigationItem.prompt = @"Internet is not available";
-        [self.view layoutIfNeeded];
-        NSLog (@"NOT!");
-    }
-}
-
-- (void)internetAppeared:(NSNotification *) note {
-    self.navigationItem.prompt = nil;
-    [self.view layoutIfNeeded];
-    NSLog (@"Successfully received the test notification!");
-}
-
-- (void)internetDisappeared:(NSNotification *) note {
-    self.navigationItem.prompt = @"Internet is not available";
-    [self.view layoutIfNeeded];
-    NSLog (@"Successfully received the test notification!");
 }
 
 #pragma mark - UITextFieldDelegate methods
@@ -152,11 +118,10 @@
     if([textField isFirstResponder]) {
         [textField resignFirstResponder];
     }
-    
     if (_task) {
         [self updateTask];
-    
-    } else {
+    }
+    else {
         [self createNewTask];
     }
     return YES;
@@ -165,8 +130,8 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     if (textField.text.length > 0) {
         _saveButton.enabled = YES;
-    
-    } else {
+    }
+    else {
         _saveButton.enabled = NO;
     }
     return YES;

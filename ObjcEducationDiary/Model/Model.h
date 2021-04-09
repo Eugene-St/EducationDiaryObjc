@@ -13,9 +13,8 @@
 @protocol Model
 
 @property (nonatomic, strong) NSString *sid;
+
 - (id)initWithDictionary:(NSDictionary*)jsonObject;
 - (NSData *)mapJSONToDataWithError:(NSError **)error;
-
-// + 2 метода для маппинга в кор дату
 
 @end

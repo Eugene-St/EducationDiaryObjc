@@ -46,7 +46,7 @@
     }];
 }
 
-- (void)deleteFromDB:(id)object :(errorCompletionBlock)completionBlock {
+- (void)deleteFromDB:(id<Model>)object :(errorCompletionBlock)completionBlock {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"BookmarkCoreData"];
     request.predicate = [NSPredicate predicateWithFormat:@"sid == %@", [object sid]];
     NSManagedObjectContext *moc = [CoreDataManager.sharedInstance context];

@@ -7,14 +7,14 @@
 
 #import <UIKit/UIKit.h>
 #import "Task.h"
-#import "ControllerDelegate.h"
+#import "TaskViewControllerDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TasksSecondViewController : UIViewController <UITextFieldDelegate>
 
 @property (nonatomic, weak) id <TaskViewControllerDelegate> delegate;
-@property (strong, nonatomic) Task *task;
+@property (nonatomic, strong) Task *task;
 
 @end
 

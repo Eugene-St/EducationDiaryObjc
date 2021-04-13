@@ -39,7 +39,7 @@
     return self;
 }
 
-- (NSData *)mapJSONToDataWithError:(NSError *__autoreleasing *)error {
+- (NSData * _Nullable)mapJSONToDataWithError:(NSError *__autoreleasing *)error {
     NSMutableDictionary *bookmark = NSMutableDictionary.new;
     if (_name) {
         bookmark[@"name"] = _name;

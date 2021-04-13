@@ -12,9 +12,9 @@
 
 @protocol Model
 
-@property (nonatomic, strong) NSString *sid;
+@property (nonatomic, strong) NSString * _Nullable sid;
 
-- (id)initWithDictionary:(NSDictionary*)jsonObject;
-- (NSData *)mapJSONToDataWithError:(NSError **)error;
+- (id _Nullable)initWithDictionary:(NSDictionary * _Nonnull)jsonObject;
+- (NSData * _Nullable)mapJSONToDataWithError:(NSError *_Nullable*_Nonnull)error;
 
 @end

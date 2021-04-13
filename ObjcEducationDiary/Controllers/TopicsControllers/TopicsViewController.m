@@ -6,8 +6,14 @@
 //
 
 #import "TopicsViewController.h"
+#import "Alert.h"
+#import "ObjcEducationDiary-Swift.h"
 
 @interface TopicsViewController ()
+
+@property (strong, nonatomic) NSMutableArray<Topic *> *topic;
+@property (strong, nonatomic) NSMutableArray<TopicViewModel *> *topicViewModels;
+@property (strong, nonatomic) TopicsMediator *mediator;
 
 @end
 
@@ -15,15 +21,62 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _mediator = TopicsMediator.new;
+    self.topicViewModels = NSMutableArray.new;
+    [self loadData];
 }
 
 #pragma mark - Table view data source
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return _topicViewModels.count;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"topicCell" forIndexPath:indexPath];
-    
-    // Configure the cell...
+    TopicCell *cell = [tableView dequeueReusableCellWithIdentifier:@"topicCell" forIndexPath:indexPath];
+    TopicViewModel *model = _topicViewModels[indexPath.row];
+    [cell configureWithTopicModel:model];
     
     return cell;
+}
+
+#pragma mark - Table view delegate
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        TopicViewModel *model = _topicViewModels[indexPath.row];
+        
+        __weak typeof(self) weakSelf = self;
+        [_mediator deleteData:model.topic :^(id _Nonnull result, NSError * _Nonnull error) {
+            if (error) {
+                [Alert errorAlert:error];
+            }
+            else {
+                [weakSelf.topicViewModels removeObjectAtIndex:indexPath.row];
+                [weakSelf.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            }
+        }];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self performSegueWithIdentifier:@"TopicDetails" sender:indexPath];
+}
+
+#pragma mark - Private methods
+- (void)loadData {
+    __weak typeof(self) weakSelf = self;
+    [_mediator fetchData:^(id  _Nonnull topics, NSError * _Nonnull error) {
+        if (error) {
+            [Alert errorAlert:error];
+        }
+        else {
+            for (Topic *topic in topics) {
+                TopicViewModel *model = [[TopicViewModel alloc] initWithTopic:topic key:topic.sid];
+                [weakSelf.topicViewModels addObject:model];
+            }
+            [weakSelf.tableView reloadData];
+        }
+    }];
 }
 
 

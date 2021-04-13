@@ -16,6 +16,7 @@
 #pragma mark - Properties
 @property (strong, nonatomic) NSMutableArray<Bookmark *> *bookmarks;
 @property (strong, nonatomic) BookmarksMediator *mediator;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *addButton;
 
 @end
 
@@ -58,6 +59,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         Bookmark* bookmark = _bookmarks[indexPath.row];
+        
         __weak typeof(self) weakSelf = self;
         [_mediator deleteData:bookmark :^(id _Nonnull result, NSError * _Nonnull error) {
             if (error) {
@@ -84,6 +86,7 @@
 #pragma mark - Alert Controller
 - (void)showAlert: (NSString *)title :(NSString *)message :(Bookmark * _Nullable)bookmark {
     UIAlertController *ac = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:nil];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if (bookmark) {
             [self updateBookmark:bookmark :ac];
@@ -119,9 +122,8 @@
         }];
     }];
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:nil];
-    [ac addAction:cancelAction];
     okAction.enabled = NO;
+    [ac addAction:cancelAction];
     [ac addAction:okAction];
     [self presentViewController:ac animated:YES completion:nil];
 }
@@ -145,6 +147,7 @@
     bookmark.text = ac.textFields.lastObject.text;
     NSNumber *timeStamp = [NSNumber numberWithInt:NSDate.timeIntervalSinceReferenceDate];
     bookmark.sid = [NSString stringWithFormat: @"%@", timeStamp];
+    
     __weak typeof(self) weakSelf = self;
     [_mediator createNewData:bookmark :^(id _Nonnull response, NSError * _Nonnull error) {
         if (error) {
@@ -163,6 +166,7 @@
     newBookmark.name = ac.textFields.firstObject.text;
     newBookmark.text = ac.textFields.lastObject.text;
     newBookmark.sid = bookmark.sid;
+    
     __weak typeof(self) weakSelf = self;
     [_mediator updateData:newBookmark :^(id _Nonnull response, NSError * _Nonnull error) {
         if (error) {
@@ -176,7 +180,6 @@
     }];
 }
 
-#pragma mark - Load data
 - (void)loadData {
     __weak typeof(self) weakSelf = self;
     [_mediator fetchData:^(id  _Nonnull bookmarks, NSError * _Nonnull error) {
@@ -193,21 +196,25 @@
 - (void)updateUIwithNetworkStatus {
     if ([NetworkMonitor.sharedInstance isInternetReachable]) {
         self.navigationItem.prompt = nil;
+        _addButton.enabled = YES;
         [self.view layoutIfNeeded];
     }
     else {
         self.navigationItem.prompt = @"Internet is not available";
+        _addButton.enabled = NO;
         [self.view layoutIfNeeded];
     }
 }
 
 - (void)internetAppeared:(NSNotification *) note {
     self.navigationItem.prompt = nil;
+    _addButton.enabled = YES;
     [self.view layoutIfNeeded];
 }
 
 - (void)internetDisappeared:(NSNotification *) note {
     self.navigationItem.prompt = @"Internet is not available";
+    _addButton.enabled = NO;
     [self.view layoutIfNeeded];
 }
 

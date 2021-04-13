@@ -12,8 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NetworkMonitor : NSObject
 
-@property (assign) BOOL isInternetReachable;
-@property (strong, nonatomic) Reachability *internetReachableFoo;
+@property (nonatomic, assign) BOOL isInternetReachable;
+@property (nonatomic, strong) Reachability *internetReachableFoo;
 
 - (void)internetIsAvailable;
 + (id)sharedInstance;

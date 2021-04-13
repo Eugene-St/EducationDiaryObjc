@@ -9,17 +9,16 @@
 #import "Task.h"
 #import "TasksMediator.h"
 #import "Alert.h"
-#import "ControllerDelegate.h"
 
 #pragma mark - Interface
 @interface TasksSecondViewController ()
 
 #pragma mark - Properties
 @property (strong, nonatomic) TasksMediator *mediator;
-@property (weak, nonatomic) IBOutlet UIButton *saveButton;
-@property (weak, nonatomic) IBOutlet UITextField *descriptionTextField;
-@property (weak, nonatomic) IBOutlet UILabel *progressLabel;
-@property (weak, nonatomic) IBOutlet UISlider *progressSlider;
+@property (nonatomic, weak) IBOutlet UIButton *saveButton;
+@property (nonatomic, weak) IBOutlet UITextField *descriptionTextField;
+@property (nonatomic, weak) IBOutlet UILabel *progressLabel;
+@property (nonatomic, weak) IBOutlet UISlider *progressSlider;
 
 @end
 
@@ -63,6 +62,7 @@
     task.createdOn = timeStamp;
     task.sid = [NSString stringWithFormat: @"%@", timeStamp];
     task.taskDescription = _descriptionTextField.text;
+    
     __weak typeof(self) weakSelf = self;
     [_mediator createNewData:task :^(id _Nonnull response, NSError * _Nonnull error) {
         if (error) {
@@ -70,7 +70,7 @@
             [weakSelf dismissViewControllerAnimated:YES completion:nil];
         }
         else {
-            [weakSelf.delegate fetchDataFromSecondVC:task];
+            [weakSelf.delegate onTaskUpdated:task];
             [weakSelf dismissViewControllerAnimated:YES completion:nil];
         }
     }];
@@ -83,6 +83,7 @@
     task.taskDescription = _descriptionTextField.text;
     task.sid = _task.sid;
     task.progress = @(ceil(_progressSlider.value));
+    
     __weak typeof(self) weakSelf = self;
     [_mediator createNewData:task :^(id _Nonnull response, NSError * _Nonnull error) {
         if (error) {
@@ -90,7 +91,7 @@
             [weakSelf dismissViewControllerAnimated:YES completion:nil];
         }
         else {
-            [weakSelf.delegate fetchDataFromSecondVC:task];
+            [weakSelf.delegate onTaskUpdated:task];
             [weakSelf dismissViewControllerAnimated:YES completion:nil];
         }
     }];

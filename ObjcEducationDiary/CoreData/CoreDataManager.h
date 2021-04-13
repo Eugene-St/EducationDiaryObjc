@@ -19,8 +19,7 @@ typedef void(^errorCompletionBlock)(NSError * _Nullable);
 @property (strong, nonatomic) NSPersistentContainer *persistentContainer;
 @property (strong, nonatomic) NSManagedObjectContext *context;
 
-+ (id)sharedInstance;
-- (void)saveContext;
++ (instancetype)sharedInstance;
 - (void)deleteItem:(id)item completion:(errorCompletionBlock)completion;
 - (void)saveItems:(errorCompletionBlock)completion;
 - (void)resetAllRecords:(NSString *)entity completion:(errorCompletionBlock)completion;

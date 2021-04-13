@@ -9,8 +9,6 @@
 
 @implementation CoreDataManager
 
-@synthesize persistentContainer = _persistentContainer;
-
 + (id)sharedInstance {
     static CoreDataManager *sharedInstance = nil;
     static dispatch_once_t onceToken;

@@ -17,6 +17,12 @@
 		585B8E022617621A00A973CB /* TasksSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585B8E012617621A00A973CB /* TasksSecondViewController.m */; };
 		585B8E08261C79DC00A973CB /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 585B8E07261C79DC00A973CB /* CoreDataManager.m */; };
 		5864D7EB261606EC00807582 /* TaskCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5864D7EA261606EC00807582 /* TaskCell.m */; };
+		587070F52625723B000B9ED7 /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587070F42625723B000B9ED7 /* Topic.swift */; };
+		5870710126257A00000B9ED7 /* TopicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5870710026257A00000B9ED7 /* TopicViewModel.swift */; };
+		5870710426258329000B9ED7 /* TopicStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5870710326258329000B9ED7 /* TopicStatus.swift */; };
+		5870710726258340000B9ED7 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5870710626258340000B9ED7 /* Extensions.swift */; };
+		5870710A26258365000B9ED7 /* TopicsMediator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5870710926258365000B9ED7 /* TopicsMediator.swift */; };
+		5870710D2625CBFA000B9ED7 /* TopicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5870710C2625CBFA000B9ED7 /* TopicCell.swift */; };
 		589B3EA7261F115C0029FEF1 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 589B3EA6261F115C0029FEF1 /* Reachability.m */; };
 		589B3EB8261F1CC60029FEF1 /* NetworkMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 589B3EB7261F1CC60029FEF1 /* NetworkMonitor.m */; };
 		58B263FA26132AC8008C0953 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58B263F926132AC8008C0953 /* Main.storyboard */; };
@@ -47,11 +53,18 @@
 		585B8DFC26172FC500A973CB /* Alert.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Alert.m; sourceTree = "<group>"; };
 		585B8E002617621A00A973CB /* TasksSecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TasksSecondViewController.h; sourceTree = "<group>"; };
 		585B8E012617621A00A973CB /* TasksSecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TasksSecondViewController.m; sourceTree = "<group>"; };
-		585B8E04261B033100A973CB /* ControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControllerDelegate.h; sourceTree = "<group>"; };
+		585B8E04261B033100A973CB /* TaskViewControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskViewControllerDelegate.h; sourceTree = "<group>"; };
 		585B8E06261C79DC00A973CB /* CoreDataManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
 		585B8E07261C79DC00A973CB /* CoreDataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
 		5864D7E9261606EC00807582 /* TaskCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskCell.h; sourceTree = "<group>"; };
 		5864D7EA261606EC00807582 /* TaskCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaskCell.m; sourceTree = "<group>"; };
+		587070EE26257145000B9ED7 /* ObjcEducationDiary-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ObjcEducationDiary-Bridging-Header.h"; sourceTree = "<group>"; };
+		587070F42625723B000B9ED7 /* Topic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
+		5870710026257A00000B9ED7 /* TopicViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicViewModel.swift; sourceTree = "<group>"; };
+		5870710326258329000B9ED7 /* TopicStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicStatus.swift; sourceTree = "<group>"; };
+		5870710626258340000B9ED7 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		5870710926258365000B9ED7 /* TopicsMediator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicsMediator.swift; sourceTree = "<group>"; };
+		5870710C2625CBFA000B9ED7 /* TopicCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicCell.swift; sourceTree = "<group>"; };
 		589B3EA4261F11060029FEF1 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		589B3EA6261F115C0029FEF1 /* Reachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		589B3EB6261F1CC60029FEF1 /* NetworkMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkMonitor.h; sourceTree = "<group>"; };
@@ -110,6 +123,7 @@
 		582FB6F0260359E8007A646C /* ObjcEducationDiary */ = {
 			isa = PBXGroup;
 			children = (
+				587070D6262562E1000B9ED7 /* SwiftFIles */,
 				58B263F8261329DC008C0953 /* CoreData */,
 				58E6CDC7260898F1003C6A1A /* Network */,
 				58E6CDBA260892BC003C6A1A /* DataMediator */,
@@ -118,6 +132,7 @@
 				582FB7292604ABC1007A646C /* Controllers */,
 				582FB72B2604ABDC007A646C /* SupportingFiles */,
 				582FB72D2604ABEA007A646C /* Source */,
+				587070EE26257145000B9ED7 /* ObjcEducationDiary-Bridging-Header.h */,
 			);
 			path = ObjcEducationDiary;
 			sourceTree = "<group>";
@@ -183,6 +198,19 @@
 			path = AlertController;
 			sourceTree = "<group>";
 		};
+		587070D6262562E1000B9ED7 /* SwiftFIles */ = {
+			isa = PBXGroup;
+			children = (
+				587070F42625723B000B9ED7 /* Topic.swift */,
+				5870710926258365000B9ED7 /* TopicsMediator.swift */,
+				5870710026257A00000B9ED7 /* TopicViewModel.swift */,
+				5870710326258329000B9ED7 /* TopicStatus.swift */,
+				5870710C2625CBFA000B9ED7 /* TopicCell.swift */,
+				5870710626258340000B9ED7 /* Extensions.swift */,
+			);
+			path = SwiftFIles;
+			sourceTree = "<group>";
+		};
 		58B263F8261329DC008C0953 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
@@ -210,7 +238,7 @@
 				5864D7EA261606EC00807582 /* TaskCell.m */,
 				585B8E002617621A00A973CB /* TasksSecondViewController.h */,
 				585B8E012617621A00A973CB /* TasksSecondViewController.m */,
-				585B8E04261B033100A973CB /* ControllerDelegate.h */,
+				585B8E04261B033100A973CB /* TaskViewControllerDelegate.h */,
 			);
 			path = TasksControllers;
 			sourceTree = "<group>";
@@ -277,9 +305,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 582FB70A260359EF007A646C /* Build configuration list for PBXNativeTarget "ObjcEducationDiary" */;
 			buildPhases = (
-				582FB6EA260359E8007A646C /* Sources */,
 				582FB6EB260359E8007A646C /* Frameworks */,
 				582FB6EC260359E8007A646C /* Resources */,
+				582FB6EA260359E8007A646C /* Sources */,
 			);
 			buildRules = (
 			);
@@ -342,9 +370,11 @@
 			files = (
 				58E6CE0E260CB3B8003C6A1A /* NetworkManager.m in Sources */,
 				589B3EB8261F1CC60029FEF1 /* NetworkMonitor.m in Sources */,
+				5870710426258329000B9ED7 /* TopicStatus.swift in Sources */,
 				58B263FF26132EB1008C0953 /* TasksViewController.m in Sources */,
 				58E6CDB726089244003C6A1A /* BookmarksViewController.m in Sources */,
 				58E6CE17260E0F1E003C6A1A /* Mediator.m in Sources */,
+				5870710A26258365000B9ED7 /* TopicsMediator.swift in Sources */,
 				58B2640D261346CF008C0953 /* Task.m in Sources */,
 				58EA226B26135BDD007CD2B0 /* TaskViewModel.m in Sources */,
 				58B264112613583B008C0953 /* TasksMediator.m in Sources */,
@@ -352,11 +382,15 @@
 				58E6CE12260DE6FA003C6A1A /* Bookmark.m in Sources */,
 				582FB707260359EF007A646C /* main.m in Sources */,
 				589B3EA7261F115C0029FEF1 /* Reachability.m in Sources */,
+				587070F52625723B000B9ED7 /* Topic.swift in Sources */,
 				585B8DFD26172FC500A973CB /* Alert.m in Sources */,
 				585B8E022617621A00A973CB /* TasksSecondViewController.m in Sources */,
+				5870710D2625CBFA000B9ED7 /* TopicCell.swift in Sources */,
 				585B8E08261C79DC00A973CB /* CoreDataManager.m in Sources */,
 				582FB6F3260359E8007A646C /* AppDelegate.m in Sources */,
 				582FB6FF260359E8007A646C /* ObjcEducationDiary.xcdatamodeld in Sources */,
+				5870710726258340000B9ED7 /* Extensions.swift in Sources */,
+				5870710126257A00000B9ED7 /* TopicViewModel.swift in Sources */,
 				5864D7EB261606EC00807582 /* TaskCell.m in Sources */,
 				58B2640726132EF7008C0953 /* TopicsViewController.m in Sources */,
 				582FB6F6260359E8007A646C /* SceneDelegate.m in Sources */,
@@ -496,6 +530,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B7NCZ24UXD;
 				INFOPLIST_FILE = ObjcEducationDiary/SupportingFiles/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -504,7 +539,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = educationDiary.eugene.st.ObjcEducationDiary;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "ObjcEducationDiary/DataMediator/ObjcEducationDiary-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/eugenest/Desktop/Docs/ObjcEducationDiary/ObjcEducationDiary/ObjcEducationDiary-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -518,6 +553,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B7NCZ24UXD;
 				INFOPLIST_FILE = ObjcEducationDiary/SupportingFiles/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -526,7 +562,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = educationDiary.eugene.st.ObjcEducationDiary;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "ObjcEducationDiary/DataMediator/ObjcEducationDiary-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/eugenest/Desktop/Docs/ObjcEducationDiary/ObjcEducationDiary/ObjcEducationDiary-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

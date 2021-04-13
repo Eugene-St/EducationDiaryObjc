@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import <SystemConfiguration/SystemConfiguration.h>
+#import "ObjcEducationDiary-Swift.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

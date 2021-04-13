@@ -5,8 +5,8 @@
 //  Created by Eugene St on 05.04.2021.
 //
 
-#ifndef ControllerDelegate_h
-#define ControllerDelegate_h
+#ifndef TaskViewControllerDelegate_h
+#define TaskViewControllerDelegate_h
 #import "Task.h"
 
 
@@ -14,6 +14,6 @@
 
 @protocol TaskViewControllerDelegate <NSObject>
 
-- (void)fetchDataFromSecondVC:(Task *)task;
+- (void)onTaskUpdated:(Task *)task;
 
 @end

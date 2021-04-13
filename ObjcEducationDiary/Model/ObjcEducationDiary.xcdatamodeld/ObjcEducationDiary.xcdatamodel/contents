@@ -11,8 +11,17 @@
         <attribute name="sid" optional="YES" attributeType="String"/>
         <attribute name="taskDescription" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="TopicCoreData" representedClassName="TopicCoreData" syncable="YES" codeGenerationType="class">
+        <attribute name="createdOn" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="dueDate" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <attribute name="sid" optional="YES" attributeType="String"/>
+        <attribute name="status" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+    </entity>
     <elements>
         <element name="BookmarkCoreData" positionX="-63" positionY="-18" width="128" height="74"/>
         <element name="TaskCoreData" positionX="-54" positionY="-9" width="128" height="89"/>
+        <element name="TopicCoreData" positionX="-54" positionY="18" width="128" height="119"/>
     </elements>
 </model>

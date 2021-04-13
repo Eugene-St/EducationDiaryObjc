@@ -61,6 +61,7 @@
     TaskCell *cell = [tableView dequeueReusableCellWithIdentifier:@"taskCell" forIndexPath:indexPath];
     TaskViewModel *model = _taskViewModels[indexPath.row];
     [cell configure:model];
+    
     return cell;
 }
 
@@ -68,6 +69,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         TaskViewModel *model = _taskViewModels[indexPath.row];
+        
         __weak typeof(self) weakSelf = self;
         [_mediator deleteData:model.task :^(id _Nonnull result, NSError * _Nonnull error) {
             if (error) {
@@ -92,7 +94,6 @@
 }
 
 #pragma mark - Private methods
-#pragma mark - Load data
 - (void)loadData {
     __weak typeof(self) weakSelf = self;
     [_mediator fetchData:^(id  _Nonnull tasks, NSError * _Nonnull error) {
@@ -124,6 +125,7 @@
         if (indexPath) {
             TaskViewModel *taskModel = _taskViewModels[indexPath.row];
             taskModel.task.progress = @100;
+            
             __weak typeof(self) weakSelf = self;
             [_mediator updateData:taskModel.task :^(id _Nonnull response, NSError * _Nonnull error) {
                 if (error) {
@@ -140,6 +142,7 @@
 - (void)updateUIwithNetworkStatus {
     if ([NetworkMonitor.sharedInstance isInternetReachable]) {
         self.navigationItem.prompt = nil;
+        _addButton.enabled = YES;
         [self.view layoutIfNeeded];
     }
     else {
@@ -151,6 +154,7 @@
 
 - (void)internetAppeared:(NSNotification *)note {
     self.navigationItem.prompt = nil;
+    _addButton.enabled = YES;
     [self.view layoutIfNeeded];
 }
 
@@ -184,7 +188,7 @@
 }
 
 #pragma mark - Controller delegate
-- (void)fetchDataFromSecondVC:(Task *)task {
+- (void)onTaskUpdated:(Task *)task {
     NSUInteger newIndex = [_taskViewModels indexOfObjectPassingTest:^BOOL(TaskViewModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         return (*stop = ([obj.task.sid isEqualToString:task.sid]));
     }];

@@ -40,12 +40,15 @@
 
 #pragma mark - Fetch data
 - (void)fetchData:(completion)completionBlock {
-    if ([NetworkMonitor.sharedInstance isInternetReachable]) {
+    
+    NSLog(@"Fetched");
+    
+//    if ([NetworkMonitor.sharedInstance isInternetReachable]) {
         [self fetchDataFromNetwork:completionBlock];
-    }
-    else {
-        [self fetchFromDB:completionBlock];
-    }
+//    }
+//    else {
+//        [self fetchFromDB:completionBlock];
+//    }
 }
 
 - (void)fetchDataFromNetwork: (void(^)(id, NSError*))completionBlock {
@@ -168,10 +171,10 @@
 }
 
 - (void)saveToDB:(id)objects :(errorCompletionBlock)completionBlock {}
-- (void)createInDB:(id)object :(errorCompletionBlock)completionBlock {}
-- (void)updateInDB:(id)object :(errorCompletionBlock)completionBlock {}
+- (void)createInDB:(id<Model>)object :(errorCompletionBlock)completionBlock {}
+- (void)updateInDB:(id<Model>)object :(errorCompletionBlock)completionBlock {}
 - (void)fetchFromDB:(completion)completionBlock {}
-- (void)deleteFromDB:(id)object :(errorCompletionBlock)completionBlock {}
+- (void)deleteFromDB:(id<Model>)object :(errorCompletionBlock)completionBlock {}
 - (void)deleteEntitiesFromDB:(errorCompletionBlock)completionBlock {}
 
 @end
